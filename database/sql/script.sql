@@ -1,0 +1,379 @@
+DROP DATABASE IF EXISTS combustible_lp;
+CREATE DATABASE combustible_lp CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE combustible_lp;
+CREATE TABLE rol (
+    COD_ROL   INT AUTO_INCREMENT PRIMARY KEY,
+    DES_ROL   VARCHAR(50) NOT NULL UNIQUE
+) ENGINE=InnoDB;
+CREATE TABLE tipo_combustible (
+    COD_COM   INT AUTO_INCREMENT PRIMARY KEY,
+    DES_COM   VARCHAR(30) NOT NULL UNIQUE
+) ENGINE=InnoDB;
+CREATE TABLE estacion (
+    COD_EST   INT AUTO_INCREMENT PRIMARY KEY,
+    NOM_EST   VARCHAR(120) NOT NULL,
+    DIR_EST   VARCHAR(200),
+    ZON_EST   VARCHAR(80),
+    LAT_EST   DECIMAL(10,7),
+    LON_EST   DECIMAL(10,7),
+    MIN_EST   DECIMAL(10,2) NOT NULL DEFAULT 0,
+    MAX_EST   DECIMAL(10,2) NOT NULL DEFAULT 0,
+    TPT_EST   INT NOT NULL DEFAULT 60,
+    ESD_EST   VARCHAR(20) NOT NULL DEFAULT 'sin_combustible',
+    ACT_EST   TINYINT(1) NOT NULL DEFAULT 1,
+    FEC_EST   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT chk_est_esd CHECK (ESD_EST IN ('normal','nivel_bajo','sin_combustible'))
+) ENGINE=InnoDB;
+CREATE TABLE usuario (
+    COD_USU   INT AUTO_INCREMENT PRIMARY KEY,
+    NOM_USU   VARCHAR(150) NOT NULL,
+    EML_USU   VARCHAR(150) NOT NULL UNIQUE,
+    PAS_USU   VARCHAR(255) NOT NULL,
+    COD_ROL   INT NOT NULL,
+    COD_EST   INT NULL,
+    ACT_USU   TINYINT(1) NOT NULL DEFAULT 1,
+    FEC_USU   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (COD_ROL) REFERENCES rol(COD_ROL),
+    FOREIGN KEY (COD_EST) REFERENCES estacion(COD_EST)
+) ENGINE=InnoDB;
+CREATE TABLE existencia_estacion (
+    COD_EST   INT NOT NULL,
+    COD_COM   INT NOT NULL,
+    CAN_EXI   DECIMAL(10,2) NOT NULL DEFAULT 0,
+    FEC_EXI   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (COD_EST, COD_COM),
+    FOREIGN KEY (COD_EST) REFERENCES estacion(COD_EST),
+    FOREIGN KEY (COD_COM) REFERENCES tipo_combustible(COD_COM),
+    CONSTRAINT chk_exi_can CHECK (CAN_EXI >= 0)
+) ENGINE=InnoDB;
+CREATE TABLE movimiento_existencia (
+    COD_MOV   BIGINT AUTO_INCREMENT PRIMARY KEY,
+    COD_EST   INT NOT NULL,
+    COD_COM   INT NOT NULL,
+    TIP_MOV   VARCHAR(10) NOT NULL,
+    CAN_MOV   DECIMAL(10,2) NOT NULL,
+    COD_USU   INT NULL,
+    REF_MOV   VARCHAR(150),
+    FEC_MOV   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (COD_EST) REFERENCES estacion(COD_EST),
+    FOREIGN KEY (COD_COM) REFERENCES tipo_combustible(COD_COM),
+    FOREIGN KEY (COD_USU) REFERENCES usuario(COD_USU),
+    CONSTRAINT chk_mov_tip CHECK (TIP_MOV IN ('entrada','salida')),
+    CONSTRAINT chk_mov_can CHECK (CAN_MOV > 0),
+    INDEX idx_mov_est_fec (COD_EST, FEC_MOV)
+) ENGINE=InnoDB;
+CREATE TABLE planta_deposito (
+    COD_PLA   INT AUTO_INCREMENT PRIMARY KEY,
+    NOM_PLA   VARCHAR(120) NOT NULL,
+    UBI_PLA   VARCHAR(200),
+    ACT_PLA   TINYINT(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB;
+CREATE TABLE tanque_almacenamiento (
+    COD_TAN   INT AUTO_INCREMENT PRIMARY KEY,
+    COD_PLA   INT NOT NULL,
+    COD_COM   INT NOT NULL,
+    NOM_TAN   VARCHAR(60) NOT NULL,
+    CAP_TAN   DECIMAL(10,2) NOT NULL,
+    NIV_TAN   DECIMAL(10,2) NOT NULL DEFAULT 0,
+    ESD_TAN   VARCHAR(20) NOT NULL DEFAULT 'operativo',
+    FOREIGN KEY (COD_PLA) REFERENCES planta_deposito(COD_PLA),
+    FOREIGN KEY (COD_COM) REFERENCES tipo_combustible(COD_COM),
+    CONSTRAINT chk_tan_cap CHECK (CAP_TAN > 0),
+    CONSTRAINT chk_tan_niv CHECK (NIV_TAN >= 0 AND NIV_TAN <= CAP_TAN),
+    CONSTRAINT chk_tan_esd CHECK (ESD_TAN IN ('operativo','critico','mantenimiento','inactivo'))
+) ENGINE=InnoDB;
+CREATE TABLE conductor (
+    COD_CON   INT AUTO_INCREMENT PRIMARY KEY,
+    COD_USU   INT NOT NULL UNIQUE,
+    NOM_CON   VARCHAR(150) NOT NULL,
+    CI_CON    VARCHAR(20) NOT NULL UNIQUE,
+    LIC_CON   VARCHAR(20) NOT NULL,
+    CAT_LIC   VARCHAR(10),
+    TEL_CON   CHAR(9),
+    ACT_CON   TINYINT(1) NOT NULL DEFAULT 1,
+    FOREIGN KEY (COD_USU) REFERENCES usuario(COD_USU)
+) ENGINE=InnoDB;
+CREATE TABLE cisterna (
+    COD_CIS   INT AUTO_INCREMENT PRIMARY KEY,
+    PLC_CIS   VARCHAR(20) NOT NULL UNIQUE,
+    CAP_CIS   DECIMAL(10,2) NOT NULL,
+    COD_COM   INT NOT NULL,
+    COD_CON   INT NULL,
+    ESD_CIS   VARCHAR(20) NOT NULL DEFAULT 'disponible',
+    FOREIGN KEY (COD_COM) REFERENCES tipo_combustible(COD_COM),
+    FOREIGN KEY (COD_CON) REFERENCES conductor(COD_CON),
+    CONSTRAINT chk_cis_cap CHECK (CAP_CIS > 0),
+    CONSTRAINT chk_cis_esd CHECK (ESD_CIS IN ('disponible','asignada','en_transito','mantenimiento'))
+) ENGINE=InnoDB;
+CREATE TABLE mantenimiento_cisterna (
+    COD_MAN   INT AUTO_INCREMENT PRIMARY KEY,
+    COD_CIS   INT NOT NULL,
+    TIP_MAN   VARCHAR(20) NOT NULL,
+    DES_MAN   TEXT,
+    FEC_MAN   DATE NOT NULL,
+    FOREIGN KEY (COD_CIS) REFERENCES cisterna(COD_CIS),
+    CONSTRAINT chk_man_tip CHECK (TIP_MAN IN ('preventivo','correctivo','documentacion'))
+) ENGINE=InnoDB;
+CREATE TABLE solicitud_abastecimiento (
+    COD_SOL   INT AUTO_INCREMENT PRIMARY KEY,
+    COD_EST   INT NOT NULL,
+    COD_COM   INT NOT NULL,
+    CAN_SOL   DECIMAL(10,2) NOT NULL,
+    ESD_SOL   VARCHAR(20) NOT NULL DEFAULT 'pendiente',
+    COD_USU   INT NOT NULL,
+    FEC_SOL   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (COD_EST) REFERENCES estacion(COD_EST),
+    FOREIGN KEY (COD_COM) REFERENCES tipo_combustible(COD_COM),
+    FOREIGN KEY (COD_USU) REFERENCES usuario(COD_USU),
+    CONSTRAINT chk_sol_can CHECK (CAN_SOL > 0),
+    CONSTRAINT chk_sol_esd CHECK (ESD_SOL IN ('pendiente','atendida','cancelada'))
+) ENGINE=InnoDB;
+CREATE TABLE abastecimiento (
+    COD_ABA   INT AUTO_INCREMENT PRIMARY KEY,
+    COD_SOL   INT NOT NULL UNIQUE,
+    COD_COM   INT NOT NULL,
+    COD_CIS   INT NULL,
+    CAN_ABA   DECIMAL(10,2) NOT NULL,
+    ESD_ABA   VARCHAR(20) NOT NULL DEFAULT 'pendiente',
+    HSA_ABA   DATETIME NULL,
+    HEL_ABA   DATETIME NULL,
+    HRL_ABA   DATETIME NULL,
+    RET_ABA   TINYINT(1) NULL,
+    MRE_ABA   INT NULL,
+    CCA_ABA   DECIMAL(10,2) NULL,
+    CRE_ABA   DECIMAL(10,2) NULL,
+    DIF_ABA   DECIMAL(10,2) GENERATED ALWAYS AS (
+                  CASE WHEN CCA_ABA IS NULL OR CRE_ABA IS NULL THEN NULL
+                       ELSE CCA_ABA - CRE_ABA END) STORED,
+    COD_USU   INT NULL,
+    FEC_ABA   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (COD_SOL) REFERENCES solicitud_abastecimiento(COD_SOL),
+    FOREIGN KEY (COD_COM) REFERENCES tipo_combustible(COD_COM),
+    FOREIGN KEY (COD_CIS) REFERENCES cisterna(COD_CIS),
+    FOREIGN KEY (COD_USU) REFERENCES usuario(COD_USU),
+    CONSTRAINT chk_aba_can CHECK (CAN_ABA > 0),
+    CONSTRAINT chk_aba_esd CHECK (ESD_ABA IN ('pendiente','asignado','en_transito','entregado','cerrado','cancelado'))
+) ENGINE=InnoDB;
+CREATE TABLE historial_estado_abastecimiento (
+    COD_HIS   BIGINT AUTO_INCREMENT PRIMARY KEY,
+    COD_ABA   INT NOT NULL,
+    ESD_HIS   VARCHAR(20) NOT NULL,
+    COD_USU   INT NULL,
+    OBS_HIS   VARCHAR(255),
+    FEC_HIS   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (COD_ABA) REFERENCES abastecimiento(COD_ABA),
+    FOREIGN KEY (COD_USU) REFERENCES usuario(COD_USU),
+    CONSTRAINT chk_his_esd CHECK (ESD_HIS IN ('pendiente','asignado','en_transito','entregado','cerrado','cancelado')),
+    INDEX idx_his_aba (COD_ABA, FEC_HIS)
+) ENGINE=InnoDB;
+CREATE TABLE incidencia (
+    COD_INC   INT AUTO_INCREMENT PRIMARY KEY,
+    TIP_INC   VARCHAR(30) NOT NULL,
+    COD_ABA   INT NULL,
+    COD_TAN   INT NULL,
+    DES_INC   TEXT,
+    ESD_INC   VARCHAR(20) NOT NULL DEFAULT 'detectada',
+    COD_USU   INT NULL,
+    ACC_INC   TEXT,
+    FEC_INC   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FRS_INC   DATETIME NULL,
+    FOREIGN KEY (COD_ABA) REFERENCES abastecimiento(COD_ABA),
+    FOREIGN KEY (COD_TAN) REFERENCES tanque_almacenamiento(COD_TAN),
+    FOREIGN KEY (COD_USU) REFERENCES usuario(COD_USU),
+    CONSTRAINT chk_inc_tip CHECK (TIP_INC IN ('retraso','diferencia_combustible','almacenamiento','otro')),
+    CONSTRAINT chk_inc_esd CHECK (ESD_INC IN ('detectada','en_revision','resuelta','cerrada')),
+    CONSTRAINT chk_inc_frs CHECK (ESD_INC NOT IN ('resuelta','cerrada') OR FRS_INC IS NOT NULL)
+) ENGINE=InnoDB;
+CREATE TABLE alerta (
+    COD_ALE   INT AUTO_INCREMENT PRIMARY KEY,
+    TIP_ALE   VARCHAR(30) NOT NULL,
+    MEN_ALE   VARCHAR(255) NOT NULL,
+    NIV_ALE   VARCHAR(10) NOT NULL DEFAULT 'media',
+    COD_EST   INT NULL,
+    COD_ABA   INT NULL,
+    COD_TAN   INT NULL,
+    COD_INC   INT NULL,
+    LEI_ALE   TINYINT(1) NOT NULL DEFAULT 0,
+    FEC_ALE   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (COD_EST) REFERENCES estacion(COD_EST),
+    FOREIGN KEY (COD_ABA) REFERENCES abastecimiento(COD_ABA),
+    FOREIGN KEY (COD_TAN) REFERENCES tanque_almacenamiento(COD_TAN),
+    FOREIGN KEY (COD_INC) REFERENCES incidencia(COD_INC),
+    CONSTRAINT chk_ale_tip CHECK (TIP_ALE IN ('existencia_minima','cisterna_retrasada','diferencia_combustible','tanque_critico','otro')),
+    CONSTRAINT chk_ale_niv CHECK (NIV_ALE IN ('baja','media','alta'))
+) ENGINE=InnoDB;
+CREATE TABLE automovil (
+    COD_VEH   INT AUTO_INCREMENT PRIMARY KEY,
+    PLA_VEH   VARCHAR(15) NOT NULL UNIQUE,
+    TIP_VEH   VARCHAR(20),
+    MOD_VEH   VARCHAR(60),
+    NOM_PROP  VARCHAR(150),
+    TEL_PROP  CHAR(9)
+) ENGINE=InnoDB;
+CREATE TABLE venta_combustible (
+    COD_VEN   BIGINT AUTO_INCREMENT PRIMARY KEY,
+    COD_EST   INT NOT NULL,
+    COD_VEH   INT NOT NULL,
+    COD_COM   INT NOT NULL,
+    CAN_VEN   DECIMAL(10,2) NOT NULL,
+    PRE_VEN   DECIMAL(10,2) NOT NULL,
+    VAL_VEN   DECIMAL(10,2) GENERATED ALWAYS AS (CAN_VEN * PRE_VEN) STORED,
+    COD_USU   INT NOT NULL,
+    FEC_VEN   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (COD_EST) REFERENCES estacion(COD_EST),
+    FOREIGN KEY (COD_VEH) REFERENCES automovil(COD_VEH),
+    FOREIGN KEY (COD_COM) REFERENCES tipo_combustible(COD_COM),
+    FOREIGN KEY (COD_USU) REFERENCES usuario(COD_USU),
+    CONSTRAINT chk_ven_can CHECK (CAN_VEN > 0),
+    CONSTRAINT chk_ven_pre CHECK (PRE_VEN > 0),
+    INDEX idx_ven_veh_fec (COD_VEH, FEC_VEN)
+) ENGINE=InnoDB;
+CREATE TABLE reporte_ciudadano (
+    COD_REP   INT AUTO_INCREMENT PRIMARY KEY,
+    COD_EST   INT NOT NULL,
+    COD_USU   INT NULL,
+    FIL_REP   VARCHAR(20),
+    DIS_REP   VARCHAR(20),
+    TES_REP   INT,
+    FEC_REP   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (COD_EST) REFERENCES estacion(COD_EST),
+    FOREIGN KEY (COD_USU) REFERENCES usuario(COD_USU),
+    CONSTRAINT chk_rep_fil CHECK (FIL_REP IN ('sin_fila','corta','moderada','larga')),
+    CONSTRAINT chk_rep_dis CHECK (DIS_REP IN ('disponible','poco_stock','agotado')),
+    INDEX idx_rep_est_fec (COD_EST, FEC_REP)
+) ENGINE=InnoDB;
+CREATE TABLE recomendacion_abastecimiento (
+    COD_REC   INT AUTO_INCREMENT PRIMARY KEY,
+    COD_EST   INT NOT NULL,
+    COD_COM   INT NOT NULL,
+    POR_REC   DECIMAL(5,2),
+    CPD_REC   DECIMAL(10,2),
+    CSU_REC   DECIMAL(10,2),
+    FEC_REC   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (COD_EST) REFERENCES estacion(COD_EST),
+    FOREIGN KEY (COD_COM) REFERENCES tipo_combustible(COD_COM)
+) ENGINE=InnoDB;
+CREATE TABLE auditoria (
+    COD_AUD   BIGINT AUTO_INCREMENT PRIMARY KEY,
+    COD_USU   INT NULL,
+    TAB_AUD   VARCHAR(60) NOT NULL,
+    ACC_AUD   VARCHAR(10) NOT NULL,
+    REG_AUD   VARCHAR(50),
+    VAN_AUD   JSON NULL,
+    VNU_AUD   JSON NULL,
+    FEC_AUD   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (COD_USU) REFERENCES usuario(COD_USU),
+    CONSTRAINT chk_aud_acc CHECK (ACC_AUD IN ('INSERT','UPDATE','DELETE'))
+) ENGINE=InnoDB;
+INSERT INTO rol (DES_ROL) VALUES
+    ('ciudadano'),('encargado_estacion'),('sub_administrador'),('conductor_cisterna'),
+    ('administrador'),('administrador_deposito'),('supervisor'),('administrador_sistema');
+INSERT INTO tipo_combustible (DES_COM) VALUES ('Gasolina'),('Diesel');
+DELIMITER $$
+CREATE TRIGGER trg_abastecimiento_bi BEFORE INSERT ON abastecimiento
+FOR EACH ROW
+BEGIN
+    DECLARE v_cap DECIMAL(10,2);
+    DECLARE v_com INT;
+    DECLARE v_tpt INT;
+    IF NEW.COD_CIS IS NOT NULL THEN
+        SELECT CAP_CIS, COD_COM INTO v_cap, v_com FROM cisterna WHERE COD_CIS = NEW.COD_CIS;
+        IF v_cap < NEW.CAN_ABA THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La capacidad de la cisterna es menor a la cantidad solicitada';
+        END IF;
+        IF v_com <> NEW.COD_COM THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La cisterna transporta un tipo de combustible distinto al requerido';
+        END IF;
+    END IF;
+    IF NEW.HSA_ABA IS NOT NULL AND NEW.HEL_ABA IS NULL THEN
+        SELECT e.TPT_EST INTO v_tpt FROM solicitud_abastecimiento s
+          JOIN estacion e ON e.COD_EST = s.COD_EST WHERE s.COD_SOL = NEW.COD_SOL;
+        SET NEW.HEL_ABA = DATE_ADD(NEW.HSA_ABA, INTERVAL v_tpt MINUTE);
+    END IF;
+    IF NEW.HRL_ABA IS NOT NULL AND NEW.HEL_ABA IS NOT NULL THEN
+        SET NEW.MRE_ABA = GREATEST(TIMESTAMPDIFF(MINUTE, NEW.HEL_ABA, NEW.HRL_ABA), 0);
+        SET NEW.RET_ABA = (NEW.MRE_ABA > 30);
+    END IF;
+END$$
+CREATE TRIGGER trg_abastecimiento_bu BEFORE UPDATE ON abastecimiento
+FOR EACH ROW
+BEGIN
+    DECLARE v_cap DECIMAL(10,2);
+    DECLARE v_com INT;
+    DECLARE v_tpt INT;
+    IF NEW.COD_CIS IS NOT NULL THEN
+        SELECT CAP_CIS, COD_COM INTO v_cap, v_com FROM cisterna WHERE COD_CIS = NEW.COD_CIS;
+        IF v_cap < NEW.CAN_ABA THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La capacidad de la cisterna es menor a la cantidad solicitada';
+        END IF;
+        IF v_com <> NEW.COD_COM THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La cisterna transporta un tipo de combustible distinto al requerido';
+        END IF;
+    END IF;
+    IF NEW.HSA_ABA IS NOT NULL AND NEW.HEL_ABA IS NULL THEN
+        SELECT e.TPT_EST INTO v_tpt FROM solicitud_abastecimiento s
+          JOIN estacion e ON e.COD_EST = s.COD_EST WHERE s.COD_SOL = NEW.COD_SOL;
+        SET NEW.HEL_ABA = DATE_ADD(NEW.HSA_ABA, INTERVAL v_tpt MINUTE);
+    END IF;
+    IF NEW.HRL_ABA IS NOT NULL AND NEW.HEL_ABA IS NOT NULL THEN
+        SET NEW.MRE_ABA = GREATEST(TIMESTAMPDIFF(MINUTE, NEW.HEL_ABA, NEW.HRL_ABA), 0);
+        SET NEW.RET_ABA = (NEW.MRE_ABA > 30);
+    END IF;
+END$$
+CREATE TRIGGER trg_incidencia_bu BEFORE UPDATE ON incidencia
+FOR EACH ROW
+BEGIN
+    IF NEW.ESD_INC <> OLD.ESD_INC THEN
+        IF NOT ( (OLD.ESD_INC = 'detectada'   AND NEW.ESD_INC = 'en_revision')
+              OR (OLD.ESD_INC = 'en_revision' AND NEW.ESD_INC = 'resuelta')
+              OR (OLD.ESD_INC = 'resuelta'    AND NEW.ESD_INC = 'cerrada') ) THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Transicion de estado no permitida: detectada > en_revision > resuelta > cerrada';
+        END IF;
+    END IF;
+END$$
+CREATE TRIGGER trg_existencia_ai AFTER INSERT ON existencia_estacion
+FOR EACH ROW
+BEGIN
+    UPDATE estacion SET ESD_EST = CASE
+        WHEN NEW.CAN_EXI = 0 THEN 'sin_combustible'
+        WHEN NEW.CAN_EXI <= MIN_EST THEN 'nivel_bajo'
+        ELSE 'normal' END
+    WHERE COD_EST = NEW.COD_EST;
+END$$
+CREATE TRIGGER trg_existencia_au AFTER UPDATE ON existencia_estacion
+FOR EACH ROW
+BEGIN
+    UPDATE estacion SET ESD_EST = CASE
+        WHEN NEW.CAN_EXI = 0 THEN 'sin_combustible'
+        WHEN NEW.CAN_EXI <= MIN_EST THEN 'nivel_bajo'
+        ELSE 'normal' END
+    WHERE COD_EST = NEW.COD_EST;
+END$$
+CREATE TRIGGER trg_venta_ai AFTER INSERT ON venta_combustible
+FOR EACH ROW
+BEGIN
+    DECLARE v_stock DECIMAL(10,2);
+    SELECT CAN_EXI INTO v_stock FROM existencia_estacion
+      WHERE COD_EST = NEW.COD_EST AND COD_COM = NEW.COD_COM
+      FOR UPDATE;
+    IF v_stock IS NULL OR v_stock < NEW.CAN_VEN THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No hay existencias suficientes para registrar esta venta';
+    END IF;
+    UPDATE existencia_estacion
+       SET CAN_EXI = CAN_EXI - NEW.CAN_VEN
+     WHERE COD_EST = NEW.COD_EST AND COD_COM = NEW.COD_COM;
+    INSERT INTO movimiento_existencia (COD_EST, COD_COM, TIP_MOV, CAN_MOV, COD_USU, REF_MOV)
+    VALUES (NEW.COD_EST, NEW.COD_COM, 'salida', NEW.CAN_VEN, NEW.COD_USU,
+            CONCAT('venta_combustible #', NEW.COD_VEN));
+END$$
+CREATE TRIGGER trg_auditoria_bu BEFORE UPDATE ON auditoria
+FOR EACH ROW
+BEGIN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El registro de auditoria no puede modificarse';
+END$$
+CREATE TRIGGER trg_auditoria_bd BEFORE DELETE ON auditoria
+FOR EACH ROW
+BEGIN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El registro de auditoria no puede eliminarse';
+END$$
+DELIMITER ;
