@@ -12,13 +12,25 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
+            $table->increments('COD_USU');
+            $table->string('NOM_USU', 150);
+            $table->string('EML_USU', 150)->unique();
+            $table->string('PAS_USU', 255);
+            $table->unsignedInteger('COD_ROL');
+            $table->unsignedInteger('COD_EST')->nullable();
+            $table->boolean('ACT_USU')->default(true);
+            $table->timestamp('FEC_USU')->useCurrent();
+
+            $table->foreign('COD_ROL')->references('COD_ROL')->on('rol');
+            $table->foreign('COD_EST')->references('COD_EST')->on('estacion');
+
+            //$table->id();
+            //$table->string('name');
+            //$table->string('email')->unique();
+            //$table->timestamp('email_verified_at')->nullable();
+            //$table->string('password');
+            //$table->rememberToken();
+            //$table->timestamps();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
