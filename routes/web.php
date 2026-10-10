@@ -6,7 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\EstacionController;
 use App\Http\Controllers\ExistenciaController;
-
+use App\Http\Controllers\CisternaController;
 
 // inicio
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -33,6 +33,10 @@ Route::get('/existencias/{estacion}/{combustible}/ajustar', [ExistenciaControlle
 Route::post('/existencias/{estacion}/{combustible}/ajustar', [ExistenciaController::class, 'guardar'])
     ->whereNumber(['estacion', 'combustible'])->name('existencias.guardar');
 
+// cisternas
+Route::resource('cisternas', CisternaController::class)
+    ->parameters(['cisternas' => 'cisterna'])
+    ->except(['show']);
 // Route::view('/login', 'auth.login')->name('login');
 // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
