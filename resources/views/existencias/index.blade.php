@@ -48,8 +48,11 @@
             </div>
 
             @php
-                $colores = ['normal' => 'verde', 'nivel_bajo' => 'amarillo', 'sin_combustible' => 'rojo'];
-                $textos = ['normal' => 'Normal', 'nivel_bajo' => 'Nivel bajo', 'sin_combustible' => 'Sin combustible'];
+                $estadoDe = function ($cantidad, $minimo) {
+                    if ($cantidad <= 0) return ['rojo', 'Sin combustible'];
+                    if ($cantidad <= $minimo) return ['amarillo', 'Nivel bajo'];
+                    return ['verde', 'Normal'];
+                };
             @endphp
 
             <table>
@@ -58,13 +61,14 @@
                     <th>Mínimo</th><th>Máximo</th><th>Estado</th><th>Última actualización</th><th>Acción</th>
                 </tr>
                 @forelse ($filas as $f)
+                    @php [$color, $texto] = $estadoDe($f->CAN_EXI, $f->MIN_EST); @endphp
                     <tr>
                         <td>{{ $f->NOM_EST }}</td>
                         <td>{{ $f->DES_COM }}</td>
                         <td class="num">{{ number_format($f->CAN_EXI, 2) }}</td>
                         <td class="num">{{ number_format($f->MIN_EST, 2) }}</td>
                         <td class="num">{{ number_format($f->MAX_EST, 2) }}</td>
-                        <td><span class="badge {{ $colores[$f->ESD_EST] ?? '' }}">{{ $textos[$f->ESD_EST] ?? $f->ESD_EST }}</span></td>
+                        <td><span class="badge {{ $color }}">{{ $texto }}</span></td>
                         <td>{{ $f->FEC_EXI ?? 'Sin registro' }}</td>
                         <td><a class="btn" href="{{ route('existencias.ajustar', [$f->COD_EST, $f->COD_COM]) }}">Ajustar</a></td>
                     </tr>
