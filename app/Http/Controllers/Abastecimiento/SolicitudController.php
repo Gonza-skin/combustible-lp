@@ -97,4 +97,30 @@ class SolicitudController extends Controller
         $solicitud->update(['ESD_SOL' => 'cancelada']);
         return redirect()->route('abast.solicitudes.index')->with('ok', 'Solicitud cancelada.');
     }
-}
+
+    public function edit(Request $request, SolicitudAbastecimiento $solicitud)
+    {
+        $this->autorizar($request, $solicitud);
+        if ($solicitud->ESD_SOL !== 'pendiente') {
+            return redirect()->route('abast.solicitudes.index')->withErrors('Solo se pueden editar solicitudes pendientes.');
+        }
+        return view('abastecimiento.solicitudes.edit', [
+            'item'         => $solicitud,
+            'estacion'     => DB::table('estacion')->where('COD_EST', $solicitud->COD_EST)->value('NOM_EST'),
+            'combustibles' => DB::table('tipo_combustible')->orderBy('DES_COM')->get(),
+        ]);
+    }
+
+    public function update(Request $request, SolicitudAbastecimiento $solicitud)
+    {
+        $this->autorizar($request, $solicitud);
+        if ($solicitud->ESD_SOL !== 'pendiente') {
+            return redirect()->route('abast.solicitudes.index')->withErrors('Solo se pueden editar solicitudes pendientes.');
+        }
+        $datos = $request->validate([
+            'COD_COM' => ['required', 'integer', 'exists:tipo_combustible,COD_COM'],
+            'CAN_SOL' => ['required', 'numeric', 'gt:0', 'max:99999999.99'],
+        ]);
+        $solicitud->update($datos);
+        return redirect()->route('abast.solicitudes.index')->with('ok', 'Solicitud actualizada.');
+    }}
