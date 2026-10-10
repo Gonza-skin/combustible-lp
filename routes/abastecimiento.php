@@ -20,6 +20,8 @@ Route::middleware(['auth'])->prefix('abastecimiento')->name('abast.')->group(fun
     Route::middleware([VerificarRol::class . ':encargado_estacion'])->group(function () use ($ctl) {
         Route::get('solicitudes/crear', [$ctl, 'create'])->name('solicitudes.create');
         Route::post('solicitudes', [$ctl, 'store'])->name('solicitudes.store');
+        Route::get('solicitudes/{solicitud}/editar', [$ctl, 'edit'])->name('solicitudes.edit');
+        Route::put('solicitudes/{solicitud}', [$ctl, 'update'])->name('solicitudes.update');
         Route::patch('solicitudes/{solicitud}/cancelar', [$ctl, 'cancelar'])->name('solicitudes.cancelar');
     });
     Route::middleware([VerificarRol::class . ':encargado_estacion,sub_administrador,administrador'])->group(function () use ($ctl) {

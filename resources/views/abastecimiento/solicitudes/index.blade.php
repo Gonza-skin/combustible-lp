@@ -16,6 +16,7 @@
     <td class="acciones">
         <a class="btn sec" href="{{ route('abast.solicitudes.show', $s->COD_SOL) }}">Ver</a>
         @if($esEncargado && $s->ESD_SOL === 'pendiente')
+        <a class="btn sec" href="{{ route('abast.solicitudes.edit', $s->COD_SOL) }}">Editar</a>
         <form method="POST" action="{{ route('abast.solicitudes.cancelar', $s->COD_SOL) }}" onsubmit="return confirm('¿Cancelar esta solicitud?')">
             @csrf @method('PATCH')<button class="btn rojo" type="submit">Cancelar</button>
         </form>

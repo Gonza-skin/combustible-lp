@@ -32,3 +32,4 @@ Route::middleware(['auth', 'role:administrador,administrador_sistema'])->group(f
     Route::resource('tipos-combustible', TipoCombustibleController::class);
 });
 */
+require __DIR__ . '/abastecimiento.php';
