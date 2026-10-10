@@ -4,20 +4,37 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\EstacionController;
+use App\Http\Controllers\ExistenciaController;
 
+
+// inicio
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// autenticacion
 Route::view('/login', 'auth.login')->middleware('guest')->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
+// dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware('auth')
-    ->name('dashboard');
+->middleware('auth')
+->name('dashboard');
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+// estaciones
+Route::resource('estaciones', EstacionController::class)
+->parameters(['estaciones' => 'estacion'])
+->except(['show']);
 
-Route::view('/login', 'auth.login')->name('login');
+// existencias
+Route::get('/existencias', [ExistenciaController::class, 'index'])->name('existencias.index');
+Route::get('/existencias/{estacion}/{combustible}/ajustar', [ExistenciaController::class, 'ajustar'])
+    ->whereNumber(['estacion', 'combustible'])->name('existencias.ajustar');
+Route::post('/existencias/{estacion}/{combustible}/ajustar', [ExistenciaController::class, 'guardar'])
+    ->whereNumber(['estacion', 'combustible'])->name('existencias.guardar');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+// Route::view('/login', 'auth.login')->name('login');
+// Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 /*
 // ---- Administración (descomentar cuando existan los controladores y el middleware) ----
@@ -32,3 +49,4 @@ Route::middleware(['auth', 'role:administrador,administrador_sistema'])->group(f
     Route::resource('tipos-combustible', TipoCombustibleController::class);
 });
 */
+
