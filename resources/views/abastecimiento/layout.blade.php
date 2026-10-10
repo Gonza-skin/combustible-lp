@@ -37,7 +37,8 @@ input[type=text],input[type=number],select,textarea{width:100%;padding:8px;borde
 @endphp
 <header>
     <nav>
-        <a href="{{ url('/dashboard') }}">Inicio</a>
+        <a href="{{ url('/abastecimiento') }}">Inicio</a>
+        <a href="{{ url('/abastecimiento/panel') }}">Panel</a>
         @if(in_array($rolActual, ['encargado_estacion','sub_administrador','administrador']))
             <a href="{{ url('/abastecimiento/solicitudes') }}">Solicitudes</a>
         @endif

@@ -6,6 +6,9 @@ use App\Http\Middleware\VerificarRol;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->prefix('abastecimiento')->name('abast.')->group(function () {
+    Route::view('/', 'abastecimiento.inicio')->name('inicio');
+    Route::get('panel', [\App\Http\Controllers\Abastecimiento\PanelController::class, 'index'])->name('panel');
+
 
     // Plantas y tanques: administrador_deposito, administrador
     Route::middleware([VerificarRol::class . ':administrador_deposito,administrador'])->group(function () {
