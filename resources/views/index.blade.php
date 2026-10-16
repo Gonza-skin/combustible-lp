@@ -49,7 +49,7 @@
         }
         header .btn-registro:hover { background: #1f9150; color: #fff; }
 
-        /* Hero / presentación */
+        /* INFORMFACION IMPORTANTE...*/
         .hero {
             background: #123B5D;
             color: white;
@@ -179,6 +179,5 @@
     <footer>
         © {{ date('Y') }} Sistema de Control y Gestión de Abastecimiento de Combustible — Municipio de La Paz
     </footer>
-
 </body>
 </html>

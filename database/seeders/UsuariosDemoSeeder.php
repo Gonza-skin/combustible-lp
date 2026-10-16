@@ -7,14 +7,14 @@ use App\Models\Usuario;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
-/** los usuarios de prueba para el sistema */
+/* USUARIOS DE PRIUEBA PARA EL SISTEMA */ 
 class UsuariosDemoSeeder extends Seeder
 {
     public function run(): void
     {
         $usuarios = [
             ['rol' => 'administrador',          'nombre' => 'Demo Administrador'],
-            ['rol' => 'administrador_sistema',  'nombre' => 'Demo Administrador del sistema'],
+        
             ['rol' => 'sub_administrador',      'nombre' => 'Demo Subadministrador'],
             ['rol' => 'administrador_deposito', 'nombre' => 'Demo Administrador de depósito'],
             ['rol' => 'encargado_estacion',     'nombre' => 'Demo Encargado de estación'],

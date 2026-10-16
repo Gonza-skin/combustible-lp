@@ -63,12 +63,12 @@
 <body>
     <main class="tarjeta">
         <h1>Iniciar sesión</h1>
-        <p class="sub">Sistema de Abastecimiento — La Paz</p>
+        <p class="sub">Sistema de Abastecimiento - La Paz</p>
 
         <form method="POST" action="{{ url('/login') }}">
             @csrf
 
-            <label for="email">Correo electrónico</label>
+            <label for="email">Correo electronico</label>
             <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus>
             @error('email')
                 <div class="error">{{ $message }}</div>
@@ -79,8 +79,8 @@
 
             <button type="submit">Entrar</button>
         </form>
-        <a class="volver" href="{{ route('registro') }}">¿No tienes cuenta? Regístrate</a>
-        <a class="volver" href="{{ route('home') }}">← Volver al inicio</a>
+        <a class="volver" href="{{ route('registro') }}">¿No tienes cuenta? Registrate</a>
+        <a class="volver" href="{{ route('home') }}">Volver al inicio</a>
     </main>
 </body>
 </html>

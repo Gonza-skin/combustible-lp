@@ -1,6 +1,6 @@
 <x-layouts.app title="Inicio">
     <x-page-header titulo="Panel de control"
-                   subtitulo="Sistema de Control y Gestión de Abastecimiento de Combustible — Municipio de La Paz" />
+                   subtitulo="Sistema de Control y Gestión de Abastecimiento de Combustible - Municipio de La Paz" />
 
     <div class="stats">
         <x-stat :valor="$estacionesActivas" texto="Estaciones activas" />
