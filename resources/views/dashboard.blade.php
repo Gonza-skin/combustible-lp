@@ -47,6 +47,16 @@
             <a href="{{ route('alertas.index') }}" style="color: #1F4E5F; font-weight: bold;">Alertas</a>
         </p>
     @endif
+    @if (\App\Http\Middleware\CiudadanoAccess::canAccess(auth()->user()))
+        <p style="padding: 0 40px;">
+            <a href="{{ route('reportes-ciudadanos.create') }}" style="color: #1F4E5F; font-weight: bold;">Reportar estado de estación</a>
+        </p>
+    @endif
+    @if (\App\Http\Middleware\AutomovilAccess::isAdministrator(auth()->user()))
+        <p style="padding: 0 40px;">
+            <a href="{{ route('reportes-ciudadanos.index') }}" style="color: #1F4E5F; font-weight: bold;">Reportes ciudadanos</a>
+        </p>
+    @endif
 @endauth
 
     <div class="container">

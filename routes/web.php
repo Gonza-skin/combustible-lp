@@ -6,10 +6,14 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IncidenciaController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ReporteCiudadanoAdminController;
+use App\Http\Controllers\ReporteCiudadanoController;
 use App\Http\Controllers\VentaCombustibleController;
 use App\Http\Middleware\AlertaAccess;
 use App\Http\Middleware\AutomovilAccess;
+use App\Http\Middleware\CiudadanoAccess;
 use App\Http\Middleware\IncidenciaAccess;
+use App\Http\Middleware\ReporteCiudadanoAdminAccess;
 use App\Http\Middleware\VentaCombustibleAccess;
 use Illuminate\Support\Facades\Route;
 
@@ -52,6 +56,18 @@ Route::middleware(['auth', VentaCombustibleAccess::class])
         Route::put('/{venta}', [VentaCombustibleController::class, 'update'])->name('update');
         Route::delete('/{venta}', [VentaCombustibleController::class, 'destroy'])->name('destroy');
     });
+
+Route::middleware(['auth', CiudadanoAccess::class])
+    ->prefix('reportes-ciudadanos')
+    ->name('reportes-ciudadanos.')
+    ->group(function () {
+        Route::get('/crear', [ReporteCiudadanoController::class, 'create'])->name('create');
+        Route::post('/', [ReporteCiudadanoController::class, 'store'])->name('store');
+    });
+
+Route::middleware(['auth', ReporteCiudadanoAdminAccess::class])
+    ->get('/reportes-ciudadanos', [ReporteCiudadanoAdminController::class, 'index'])
+    ->name('reportes-ciudadanos.index');
 
 Route::middleware(['auth', IncidenciaAccess::class])
     ->prefix('incidencias')
