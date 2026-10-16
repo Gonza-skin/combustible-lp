@@ -7,45 +7,43 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\EstacionController;
 use App\Http\Controllers\ExistenciaController;
 use App\Http\Controllers\CisternaController;
+use App\Http\Controllers\ConductorController;
+use App\Http\Controllers\MantenimientoCisternaController;
 
-// inicio
+// Inicio
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// autenticacion
+// Autenticación
 Route::view('/login', 'auth.login')->middleware('guest')->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-// dashboard
+// Panel principal
 Route::get('/dashboard', [DashboardController::class, 'index'])
-->middleware('auth')
-->name('dashboard');
+    ->middleware('auth')->name('dashboard');
 
-// estaciones
+// Estaciones
 Route::resource('estaciones', EstacionController::class)
-->parameters(['estaciones' => 'estacion'])
-->except(['show']);
+    ->parameters(['estaciones' => 'estacion'])->except(['show']);
 
-// existencias
+// Existencias
 Route::get('/existencias', [ExistenciaController::class, 'index'])->name('existencias.index');
 Route::get('/existencias/{estacion}/{combustible}/ajustar', [ExistenciaController::class, 'ajustar'])
     ->whereNumber(['estacion', 'combustible'])->name('existencias.ajustar');
 Route::post('/existencias/{estacion}/{combustible}/ajustar', [ExistenciaController::class, 'guardar'])
     ->whereNumber(['estacion', 'combustible'])->name('existencias.guardar');
 
-// cisternas
-Route::resource('cisternas', CisternaController::class)
-    ->parameters(['cisternas' => 'cisterna'])
-    ->except(['show']);
-// Route::view('/login', 'auth.login')->name('login');
-// Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+// cisternas, conductores y mantenimientos
+Route::resource('cisternas', CisternaController::class)->parameters(['cisternas' => 'cisterna']);
+Route::resource('conductores', ConductorController::class)->parameters(['conductores' => 'conductor']);
+Route::resource('mantenimiento-cisternas', MantenimientoCisternaController::class)
+    ->parameters(['mantenimiento-cisternas' => 'mantenimiento_cisterna']);
 
 /*
-// ---- Administración (descomentar cuando existan los controladores y el middleware) ----
-// Al activarlo, agrega arriba estos tres "use":
-// use App\Http\Controllers\UsuarioController;
-// use App\Http\Controllers\RolController;
-// use App\Http\Controllers\TipoCombustibleController;
+// Administración (activar cuando existan los controladores y middleware)
+use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\RolController;
+use App\Http\Controllers\TipoCombustibleController;
 
 Route::middleware(['auth', 'role:administrador,administrador_sistema'])->group(function () {
     Route::resource('usuarios', UsuarioController::class);
@@ -53,4 +51,3 @@ Route::middleware(['auth', 'role:administrador,administrador_sistema'])->group(f
     Route::resource('tipos-combustible', TipoCombustibleController::class);
 });
 */
-
