@@ -85,6 +85,19 @@
                 </div>
             </form>
 
+            @php
+                $roles = [
+                    'administrador'          => 'Administrador',
+                    'administrador_sistema'  => 'Administrador del sistema',
+                    'administrador_deposito' => 'Administrador de depósito',
+                    'sub_administrador'      => 'Subadministrador',
+                    'encargado_estacion'     => 'Encargado de estación',
+                    'conductor_cisterna'     => 'Conductor de cisterna',
+                    'supervisor'             => 'Supervisor',
+                    'ciudadano'              => 'Ciudadano',
+                ];
+            @endphp
+
             <table>
                 <tr>
                     <th>Fecha</th><th>Estación</th><th>Combustible</th>
@@ -98,7 +111,7 @@
                         <td><span class="badge {{ $m->TIP_MOV }}">{{ ucfirst($m->TIP_MOV) }}</span></td>
                         <td class="num">{{ number_format($m->CAN_MOV, 2) }}</td>
                         <td>{{ $m->REF_MOV }}</td>
-                        <td>{{ $m->NOM_USU ?? 'Sin usuario' }}</td>
+                        <td>{{ $roles[$m->DES_ROL] ?? ($m->DES_ROL ? ucfirst(str_replace('_', ' ', $m->DES_ROL)) : 'Sin usuario') }}</td>
                     </tr>
                 @empty
                     <tr><td colspan="7">No hay movimientos con esos filtros.</td></tr>

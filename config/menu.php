@@ -1,13 +1,5 @@
 <?php
 
-/*
-| Menú lateral del sistema. Una línea por pantalla.
-|   'titulo' → texto que se ve en el menú
-|   'ruta'   → nombre de la ruta (ej. 'cisternas.index')
-|   'roles'  → roles que la ven (igual que en role:...). [] = todos los que inicien sesión
-|   'grupo'  → (opcional) título de la sección
-*/
-
 return [
     ['titulo' => 'Inicio', 'ruta' => 'dashboard', 'roles' => []],
 
@@ -16,6 +8,9 @@ return [
     ['grupo' => 'Administración', 'titulo' => 'Roles', 'ruta' => 'roles.index', 'roles' => ['administrador']],
     ['grupo' => 'Administración', 'titulo' => 'Tipos de combustible', 'ruta' => 'tipos-combustible.index', 'roles' => ['administrador']],
 
-    // ---- Ejemplo para los demás (descomentar y ajustar) ----
-    // ['grupo' => 'Estaciones', 'titulo' => 'Estaciones', 'ruta' => 'estaciones.index', 'roles' => ['administrador', 'supervisor']],
+    // ---- Estaciones y existencias (Angela) ----
+    ['grupo' => 'Estaciones', 'titulo' => 'Estaciones', 'ruta' => 'estaciones.index', 'roles' => []],
+    ['grupo' => 'Estaciones', 'titulo' => 'Existencias', 'ruta' => 'existencias.index', 'roles' => ['encargado_estacion', 'administrador']],
+    ['grupo' => 'Estaciones', 'titulo' => 'Movimientos', 'ruta' => 'movimientos.index', 'roles' => ['encargado_estacion', 'administrador', 'supervisor']],
+    ['grupo' => 'Estaciones', 'titulo' => 'Recomendación de abastecimiento', 'ruta' => 'recomendaciones.index', 'roles' => ['sub_administrador', 'administrador']],
 ];
