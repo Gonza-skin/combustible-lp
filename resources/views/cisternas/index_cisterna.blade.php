@@ -12,9 +12,14 @@
         <div class="p-6">
             <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
                 <h2 class="text-3xl font-bold text-[#1F4E5F]">Gestión de cisternas</h2>
-                <a href="{{ route('dashboard') }}" class="rounded-lg bg-gray-200 px-4 py-2 font-semibold text-[#1F4E5F] shadow-sm transition hover:bg-gray-300">
-                    Volver al Dashboard
-                </a>
+                <div class="flex gap-2">
+                    <a href="{{ route('mantenimiento-cisternas.index') }}" class="rounded-lg bg-gray-200 px-4 py-2 font-semibold text-[#1F4E5F] shadow-sm transition hover:bg-gray-300">
+                        Mantenimiento
+                    </a>
+                    <a href="{{ route('dashboard') }}" class="rounded-lg bg-gray-200 px-4 py-2 font-semibold text-[#1F4E5F] shadow-sm transition hover:bg-gray-300">
+                        Volver al Dashboard
+                    </a>
+                </div>
             </div>
 
             @if(session('success'))

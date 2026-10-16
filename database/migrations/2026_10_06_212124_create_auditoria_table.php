@@ -3,12 +3,10 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('auditoria', function (Blueprint $table) {
@@ -22,15 +20,30 @@ return new class extends Migration
             $table->timestamp('FEC_AUD')->useCurrent();
 
             $table->foreign('COD_USU')->references('COD_USU')->on('usuario');
-            $table->check("ACC_AUD IN ('INSERT','UPDATE','DELETE')");
+            $table->check("ACC_AUD IN ('INSERT','UPDATE','DELETE')", 'chk_aud_acc');
         });
+
+        DB::unprepared("
+            CREATE TRIGGER trg_auditoria_bu BEFORE UPDATE ON auditoria
+            FOR EACH ROW
+            BEGIN
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El registro de auditoria no puede modificarse';
+            END;
+        ");
+
+        DB::unprepared("
+            CREATE TRIGGER trg_auditoria_bd BEFORE DELETE ON auditoria
+            FOR EACH ROW
+            BEGIN
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El registro de auditoria no puede eliminarse';
+            END;
+        ");
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
+        DB::unprepared('DROP TRIGGER IF EXISTS trg_auditoria_bd');
+        DB::unprepared('DROP TRIGGER IF EXISTS trg_auditoria_bu');
         Schema::dropIfExists('auditoria');
     }
 };

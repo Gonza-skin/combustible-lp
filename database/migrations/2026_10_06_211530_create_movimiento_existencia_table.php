@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('movimiento_existencia', function (Blueprint $table) {
@@ -24,15 +21,12 @@ return new class extends Migration
             $table->foreign('COD_EST')->references('COD_EST')->on('estacion');
             $table->foreign('COD_COM')->references('COD_COM')->on('tipo_combustible');
             $table->foreign('COD_USU')->references('COD_USU')->on('usuario');
-            $table->check("TIP_MOV IN ('entrada','salida')");
-            $table->check('CAN_MOV > 0');
+            $table->check("TIP_MOV IN ('entrada','salida')", 'chk_mov_tip');
+            $table->check('CAN_MOV > 0', 'chk_mov_can');
             $table->index(['COD_EST', 'FEC_MOV'], 'idx_mov_est_fec');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('movimiento_existencia');

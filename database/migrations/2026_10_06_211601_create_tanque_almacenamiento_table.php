@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('tanque_almacenamiento', function (Blueprint $table) {
@@ -22,15 +19,12 @@ return new class extends Migration
 
             $table->foreign('COD_PLA')->references('COD_PLA')->on('planta_deposito');
             $table->foreign('COD_COM')->references('COD_COM')->on('tipo_combustible');
-            $table->check('CAP_TAN > 0');
-            $table->check('NIV_TAN >= 0 AND NIV_TAN <= CAP_TAN');
-            $table->check("ESD_TAN IN ('operativo','critico','mantenimiento','inactivo')");
+            $table->check('CAP_TAN > 0', 'chk_tan_cap');
+            $table->check('NIV_TAN >= 0 AND NIV_TAN <= CAP_TAN', 'chk_tan_niv');
+            $table->check("ESD_TAN IN ('operativo','critico','mantenimiento','inactivo')", 'chk_tan_esd');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('tanque_almacenamiento');

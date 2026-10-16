@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('mantenimiento_cisterna', function (Blueprint $table) {
@@ -19,13 +16,10 @@ return new class extends Migration
             $table->date('FEC_MAN');
 
             $table->foreign('COD_CIS')->references('COD_CIS')->on('cisterna');
-            $table->check("TIP_MAN IN ('preventivo','correctivo','documentacion')");
+            $table->check("TIP_MAN IN ('preventivo','correctivo','documentacion')", 'chk_man_tip');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('mantenimiento_cisterna');

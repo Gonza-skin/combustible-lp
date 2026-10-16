@@ -59,8 +59,8 @@
                         @error('CAT_LIC')<p class="mt-1 text-sm font-medium text-red-600">{{ $message }}</p>@enderror
                     </div>
                     <div>
-                        <label for="TEL_CON" class="mb-1 block font-semibold text-gray-700">Teléfono (9 dígitos)</label>
-                        <input id="TEL_CON" name="TEL_CON" type="tel" value="{{ old('TEL_CON', $conductor->TEL_CON) }}" maxlength="9" pattern="[0-9]{9}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#1F4E5F] focus:ring-[#1F4E5F]">
+                        <label for="TEL_CON" class="mb-1 block font-semibold text-gray-700">Teléfono (8 dígitos)</label>
+                        <input id="TEL_CON" name="TEL_CON" type="tel" value="{{ old('TEL_CON', $conductor->TEL_CON) }}" maxlength="8" pattern="[0-8]{8}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#1F4E5F] focus:ring-[#1F4E5F]">
                         @error('TEL_CON')<p class="mt-1 text-sm font-medium text-red-600">{{ $message }}</p>@enderror
                     </div>
                     <div>

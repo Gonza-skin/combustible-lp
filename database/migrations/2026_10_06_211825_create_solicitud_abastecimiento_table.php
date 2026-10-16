@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('solicitud_abastecimiento', function (Blueprint $table) {
@@ -23,14 +20,11 @@ return new class extends Migration
             $table->foreign('COD_EST')->references('COD_EST')->on('estacion');
             $table->foreign('COD_COM')->references('COD_COM')->on('tipo_combustible');
             $table->foreign('COD_USU')->references('COD_USU')->on('usuario');
-            $table->check('CAN_SOL > 0');
-            $table->check("ESD_SOL IN ('pendiente','atendida','cancelada')");
+            $table->check('CAN_SOL > 0', 'chk_sol_can');
+            $table->check("ESD_SOL IN ('pendiente','atendida','cancelada')", 'chk_sol_esd');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('solicitud_abastecimiento');

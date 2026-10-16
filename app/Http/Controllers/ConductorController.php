@@ -41,7 +41,7 @@ class ConductorController extends Controller
             'CI_CON' => 'required|string|max:20|unique:conductor,CI_CON',
             'LIC_CON' => 'required|string|max:20',
             'CAT_LIC' => 'nullable|string|max:10',
-            'TEL_CON' => ['nullable', 'string', 'size:9', 'regex:/^[0-9]{9}$/'],
+            'TEL_CON' => ['nullable', 'string', 'size:8', 'regex:/^[0-8]{8}$/'],
             'ACT_CON' => 'required|boolean',
         ];
         $messages = [
@@ -50,7 +50,7 @@ class ConductorController extends Controller
             'CI_CON.required' => 'La cédula de identidad es obligatoria.', 'CI_CON.unique' => 'Ya existe un conductor con esa cédula.', 'CI_CON.max' => 'La cédula no debe superar los 20 caracteres.',
             'LIC_CON.required' => 'El número de licencia es obligatorio.', 'LIC_CON.max' => 'La licencia no debe superar los 20 caracteres.',
             'CAT_LIC.max' => 'La categoría no debe superar los 10 caracteres.',
-            'TEL_CON.size' => 'El teléfono debe contener exactamente 9 dígitos.', 'TEL_CON.regex' => 'El teléfono solo debe contener números.',
+            'TEL_CON.size' => 'El teléfono debe contener exactamente 8 dígitos.', 'TEL_CON.regex' => 'El teléfono solo debe contener números.',
             'ACT_CON.required' => 'Debes indicar si el conductor está activo.', 'ACT_CON.boolean' => 'El estado seleccionado no es válido.',
         ];
         $datos = $request->validate($rules, $messages);
@@ -92,12 +92,12 @@ class ConductorController extends Controller
             'NOM_CON' => 'required|string|max:150',
             'CI_CON' => ['required', 'string', 'max:20', Rule::unique('conductor', 'CI_CON')->ignore($conductor->COD_CON, 'COD_CON')],
             'LIC_CON' => 'required|string|max:20', 'CAT_LIC' => 'nullable|string|max:10',
-            'TEL_CON' => ['nullable', 'string', 'size:9', 'regex:/^[0-9]{9}$/'], 'ACT_CON' => 'required|boolean',
+            'TEL_CON' => ['nullable', 'string', 'size:8', 'regex:/^[0-8]{8}$/'], 'ACT_CON' => 'required|boolean',
         ];
         $messages = [
             'COD_USU.required' => 'Debes seleccionar un usuario del sistema.', 'COD_USU.exists' => 'El usuario seleccionado no existe.', 'COD_USU.unique' => 'Este usuario ya está vinculado a otro conductor.',
             'NOM_CON.required' => 'El nombre completo es obligatorio.', 'CI_CON.required' => 'La cédula de identidad es obligatoria.', 'CI_CON.unique' => 'Otro conductor ya utiliza esa cédula.',
-            'LIC_CON.required' => 'El número de licencia es obligatorio.', 'TEL_CON.size' => 'El teléfono debe contener exactamente 9 dígitos.', 'TEL_CON.regex' => 'El teléfono solo debe contener números.',
+            'LIC_CON.required' => 'El número de licencia es obligatorio.', 'TEL_CON.size' => 'El teléfono debe contener exactamente 8 dígitos.', 'TEL_CON.regex' => 'El teléfono solo debe contener números.',
         ];
         $datos = $request->validate($rules, $messages);
         $datos['ACT_CON'] = (int) $datos['ACT_CON'];

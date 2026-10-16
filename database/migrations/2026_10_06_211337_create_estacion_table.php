@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('estacion', function (Blueprint $table) {
@@ -24,13 +21,11 @@ return new class extends Migration
             $table->string('ESD_EST', 20)->default('sin_combustible');
             $table->boolean('ACT_EST')->default(true);
             $table->timestamp('FEC_EST')->useCurrent();
-            $table->check("ESD_EST IN ('normal','nivel_bajo','sin_combustible')");
+
+            $table->check("ESD_EST IN ('normal','nivel_bajo','sin_combustible')", 'chk_est_esd');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('estacion');

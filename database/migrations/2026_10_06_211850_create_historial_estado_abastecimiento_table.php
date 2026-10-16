@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('historial_estado_abastecimiento', function (Blueprint $table) {
@@ -21,14 +18,11 @@ return new class extends Migration
 
             $table->foreign('COD_ABA')->references('COD_ABA')->on('abastecimiento');
             $table->foreign('COD_USU')->references('COD_USU')->on('usuario');
-            $table->check("ESD_HIS IN ('pendiente','asignado','en_transito','entregado','cerrado','cancelado')");
+            $table->check("ESD_HIS IN ('pendiente','asignado','en_transito','entregado','cerrado','cancelado')", 'chk_his_esd');
             $table->index(['COD_ABA', 'FEC_HIS'], 'idx_his_aba');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('historial_estado_abastecimiento');
