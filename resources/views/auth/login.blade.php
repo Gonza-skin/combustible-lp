@@ -79,7 +79,7 @@
 
             <button type="submit">Entrar</button>
         </form>
-
+        <a class="volver" href="{{ route('registro') }}">¿No tienes cuenta? Regístrate</a>
         <a class="volver" href="{{ route('home') }}">← Volver al inicio</a>
     </main>
 </body>

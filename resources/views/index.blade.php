@@ -15,7 +15,7 @@
 
         /* Barra superior */
         header {
-            background: #1F4E5F;
+            background: #123B5D;
             color: white;
             padding: 18px 40px;
             display: flex;
@@ -38,10 +38,20 @@
         header .btn-login:hover {
             background: #e0e0e0;
         }
+        .acciones-header { display: flex; gap: 10px; align-items: center; }
+        header .btn-registro {
+            background: #27AE60;
+            color: #0b2740;
+            padding: 10px 22px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        header .btn-registro:hover { background: #1f9150; color: #fff; }
 
         /* Hero / presentación */
         .hero {
-            background: linear-gradient(135deg, #1F4E5F, #2c7873);
+            background: #123B5D;
             color: white;
             text-align: center;
             padding: 70px 20px;
@@ -79,7 +89,7 @@
         }
         .feature-card h3 {
             margin: 0 0 10px;
-            color: #1F4E5F;
+            color: #123B5D;
         }
         .feature-card p {
             margin: 0;
@@ -95,7 +105,7 @@
             text-align: center;
         }
         .info h2 {
-            color: #1F4E5F;
+            color: #123B5D;
         }
         .info p {
             max-width: 750px;
@@ -103,11 +113,11 @@
             line-height: 1.6;
             color: #555;
         }
-
+        /* parte final */
         footer {
             text-align: center;
             padding: 25px;
-            background: #1F4E5F;
+            background: #123B5D;
             color: #cfd8dc;
             font-size: 13px;
         }
@@ -117,7 +127,10 @@
 
     <header>
         <div class="logo">Sistema de Abastecimiento — La Paz</div>
-        <a href="{{ route('login') }}" class="btn-login">Iniciar sesión</a>
+        <div class="acciones-header">
+    <a href="{{ route('login') }}" class="btn-login">Iniciar sesión</a>
+    <a href="{{ route('registro') }}" class="btn-registro">Registrarse</a>
+</div>
     </header>
 
     <section class="hero">
@@ -153,7 +166,7 @@
     </section>
 
     <section class="info">
-        <h2>¿Qué es este sistema?</h2>
+        <h2>¿Que es este sistema?</h2>
         <p>
             El Sistema de Control y Gestión de Abastecimiento de Combustible nace para
             enfrentar la crisis de desabastecimiento en el Municipio de La Paz, brindando
