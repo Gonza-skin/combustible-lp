@@ -26,3 +26,4 @@ Route::get('/existencias/{estacion}/{combustible}/ajustar', [ExistenciaControlle
     ->whereNumber(['estacion', 'combustible'])->name('existencias.ajustar');
 Route::post('/existencias/{estacion}/{combustible}/ajustar', [ExistenciaController::class, 'guardar'])
     ->whereNumber(['estacion', 'combustible'])->name('existencias.guardar');
+Route::get('/movimientos', [\App\Http\Controllers\MovimientoController::class, 'index'])->name('movimientos.index');

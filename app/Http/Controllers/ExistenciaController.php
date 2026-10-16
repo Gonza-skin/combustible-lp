@@ -55,7 +55,7 @@ class ExistenciaController extends Controller
 
     public function guardar(Request $request, int $estacion, int $combustible)
     {
-        $this->buscarFila($estacion, $combustible);
+        $fila = $this->buscarFila($estacion, $combustible);
 
         $datos = $request->validate([
             'CANTIDAD' => 'required|numeric|min:0|max:99999999',
@@ -63,6 +63,12 @@ class ExistenciaController extends Controller
         ]);
 
         $nueva = round((float) $datos['CANTIDAD'], 2);
+
+        if ((float) $fila->MAX_EST > 0 && $nueva > (float) $fila->MAX_EST) {
+            return back()
+                ->withErrors(['CANTIDAD' => 'La cantidad no puede superar el máximo de la estación (' . number_format($fila->MAX_EST, 2) . ' L).'])
+                ->withInput();
+        }
 
         DB::transaction(function () use ($estacion, $combustible, $nueva, $datos) {
             $actual = DB::table('existencia_estacion')
