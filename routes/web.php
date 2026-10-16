@@ -1,10 +1,16 @@
 <?php
 
+use App\Http\Controllers\AlertaController;
 use App\Http\Controllers\AutomovilController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\IncidenciaController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\VentaCombustibleController;
+use App\Http\Middleware\AlertaAccess;
 use App\Http\Middleware\AutomovilAccess;
+use App\Http\Middleware\IncidenciaAccess;
+use App\Http\Middleware\VentaCombustibleAccess;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/login', 'auth.login')->middleware('guest')->name('login');
@@ -32,6 +38,39 @@ Route::middleware(['auth', AutomovilAccess::class])
         Route::get('/{automovil}/edit', [AutomovilController::class, 'edit'])->name('edit');
         Route::match(['put', 'patch'], '/{automovil}', [AutomovilController::class, 'update'])->name('update');
         Route::delete('/{automovil}', [AutomovilController::class, 'destroy'])->name('destroy');
+    });
+
+Route::middleware(['auth', VentaCombustibleAccess::class])
+    ->prefix('ventas')
+    ->name('ventas.')
+    ->group(function () {
+        Route::get('/', [VentaCombustibleController::class, 'index'])->name('index');
+        Route::get('/create', [VentaCombustibleController::class, 'create'])->name('create');
+        Route::post('/', [VentaCombustibleController::class, 'store'])->name('store');
+        Route::get('/{venta}', [VentaCombustibleController::class, 'show'])->name('show');
+        Route::get('/{venta}/edit', [VentaCombustibleController::class, 'edit'])->name('edit');
+        Route::put('/{venta}', [VentaCombustibleController::class, 'update'])->name('update');
+        Route::delete('/{venta}', [VentaCombustibleController::class, 'destroy'])->name('destroy');
+    });
+
+Route::middleware(['auth', IncidenciaAccess::class])
+    ->prefix('incidencias')
+    ->name('incidencias.')
+    ->group(function () {
+        Route::get('/', [IncidenciaController::class, 'index'])->name('index');
+        Route::get('/create', [IncidenciaController::class, 'create'])->name('create');
+        Route::post('/', [IncidenciaController::class, 'store'])->name('store');
+        Route::get('/{incidencia}', [IncidenciaController::class, 'show'])->name('show');
+        Route::get('/{incidencia}/edit', [IncidenciaController::class, 'edit'])->name('edit');
+        Route::put('/{incidencia}', [IncidenciaController::class, 'update'])->name('update');
+        Route::delete('/{incidencia}', [IncidenciaController::class, 'destroy'])->name('destroy');
+    });
+
+Route::middleware(['auth', AlertaAccess::class])
+    ->prefix('alertas')
+    ->name('alertas.')
+    ->group(function () {
+        Route::get('/', [AlertaController::class, 'index'])->name('index');
     });
 
 /*

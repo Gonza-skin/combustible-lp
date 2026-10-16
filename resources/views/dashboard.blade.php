@@ -32,6 +32,21 @@
             <a href="{{ route('automoviles.index') }}" style="color: #1F4E5F; font-weight: bold;">Automóviles</a>
         </p>
     @endif
+    @if (\App\Http\Middleware\VentaCombustibleAccess::canAccess(auth()->user()))
+        <p style="padding: 0 40px;">
+            <a href="{{ route('ventas.index') }}" style="color: #1F4E5F; font-weight: bold;">Ventas de combustible</a>
+        </p>
+    @endif
+    @if (\App\Http\Middleware\IncidenciaAccess::canAccess(auth()->user()))
+        <p style="padding: 0 40px;">
+            <a href="{{ route('incidencias.index') }}" style="color: #1F4E5F; font-weight: bold;">Incidencias</a>
+        </p>
+    @endif
+    @if (\App\Http\Middleware\AlertaAccess::canAccess(auth()->user()))
+        <p style="padding: 0 40px;">
+            <a href="{{ route('alertas.index') }}" style="color: #1F4E5F; font-weight: bold;">Alertas</a>
+        </p>
+    @endif
 @endauth
 
     <div class="container">
