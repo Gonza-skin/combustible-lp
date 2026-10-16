@@ -1,9 +1,11 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AutomovilController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
+use App\Http\Middleware\AutomovilAccess;
+use Illuminate\Support\Facades\Route;
 
 Route::view('/login', 'auth.login')->middleware('guest')->name('login');
 Route::post('/login', [LoginController::class, 'login']);
@@ -18,6 +20,19 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::view('/login', 'auth.login')->name('login');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+Route::middleware(['auth', AutomovilAccess::class])
+    ->prefix('automoviles')
+    ->name('automoviles.')
+    ->group(function () {
+        Route::get('/', [AutomovilController::class, 'index'])->name('index');
+        Route::get('/create', [AutomovilController::class, 'create'])->name('create');
+        Route::post('/', [AutomovilController::class, 'store'])->name('store');
+        Route::get('/{automovil}', [AutomovilController::class, 'show'])->name('show');
+        Route::get('/{automovil}/edit', [AutomovilController::class, 'edit'])->name('edit');
+        Route::match(['put', 'patch'], '/{automovil}', [AutomovilController::class, 'update'])->name('update');
+        Route::delete('/{automovil}', [AutomovilController::class, 'destroy'])->name('destroy');
+    });
 
 /*
 // ---- Administración (descomentar cuando existan los controladores y el middleware) ----

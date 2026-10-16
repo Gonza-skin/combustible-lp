@@ -26,6 +26,13 @@
     @csrf
     <button type="submit">Cerrar sesión</button>
 </form>
+@auth
+    @if (\App\Http\Middleware\AutomovilAccess::canAccess(auth()->user()))
+        <p style="padding: 0 40px;">
+            <a href="{{ route('automoviles.index') }}" style="color: #1F4E5F; font-weight: bold;">Automóviles</a>
+        </p>
+    @endif
+@endauth
 
     <div class="container">
         <div class="cards">
