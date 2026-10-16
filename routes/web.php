@@ -5,14 +5,17 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EstacionController;
 use App\Http\Controllers\ExistenciaController;
+use App\Http\Controllers\LoginController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/login', function () {
-    return 'formulario aqui xd';
-})->name('login');
+Route::view('/login', 'auth.login')->middleware('guest')->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware('auth')
+    ->name('dashboard');
 
 Route::resource('estaciones', EstacionController::class)
     ->parameters(['estaciones' => 'estacion'])

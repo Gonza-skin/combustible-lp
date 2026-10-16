@@ -15,13 +15,17 @@
         }
         .card h2 { margin: 0; font-size: 32px; color: #1F4E5F; }
         .card p { margin: 5px 0 0; color: #666; }
-        .card.alerta h2 { color: #c0392b; }
+        .card.alerta h2 { color: #cf3221; }
     </style>
 </head>
 <body>
     <header>
         <h1>Sistema de Control y Gestión de Abastecimiento de Combustible — Municipio de La Paz</h1>
     </header>
+    <form method="POST" action="{{ route('logout') }}">
+    @csrf
+    <button type="submit">Cerrar sesión</button>
+</form>
 
     <div class="container">
         <div class="cards">
