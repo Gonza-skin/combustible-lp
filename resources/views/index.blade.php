@@ -144,22 +144,22 @@
 
     <section class="features">
         <div class="feature-card">
-            <div class="icon">.</div>
+            
             <h3>Mapa interactivo</h3>
             <p>Ubica las estaciones de servicio más cercanas y su estado actual de abastecimiento.</p>
         </div>
         <div class="feature-card">
-            <div class="icon">.</div>
+            
             <h3>Disponibilidad en tiempo real</h3>
             <p>Consulta si una estación tiene combustible disponible, nivel bajo, o está agotada.</p>
         </div>
         <div class="feature-card">
-            <div class="icon">.</div>
+            
             <h3>Reportes ciudadanos</h3>
             <p>Comparte y consulta el estado de las filas reportado por otros usuarios en vivo.</p>
         </div>
         <div class="feature-card">
-            <div class="icon">.</div>
+            
             <h3>Seguimiento de abastecimiento</h3>
             <p>El municipio controla la asignación de cisternas, horarios y entregas a cada estación.</p>
         </div>
