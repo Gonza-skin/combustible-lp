@@ -267,7 +267,7 @@ CREATE TABLE auditoria (
 ) ENGINE=InnoDB;
 INSERT INTO rol (DES_ROL) VALUES
     ('ciudadano'),('encargado_estacion'),('sub_administrador'),('conductor_cisterna'),
-    ('administrador'),('administrador_deposito'),('supervisor'),('administrador_sistema');
+    ('administrador'),('administrador_deposito'),('supervisor');
 INSERT INTO tipo_combustible (DES_COM) VALUES ('Gasolina'),('Diesel');
 DELIMITER $$
 CREATE TRIGGER trg_abastecimiento_bi BEFORE INSERT ON abastecimiento
