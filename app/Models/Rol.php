@@ -15,13 +15,13 @@ class Rol extends Model
 
     protected $fillable = ['DES_ROL'];
 
-    /** Roles base: sus nombres se usan en las rutas, por eso no se pueden renombrar ni borrar. */
+    /** los roles base que muestra en pantalla */
     public const DEL_SISTEMA = [
         'ciudadano', 'encargado_estacion', 'sub_administrador', 'conductor_cisterna',
-        'administrador', 'administrador_deposito', 'supervisor', 'administrador_sistema',
+        'administrador', 'administrador_deposito', 'supervisor',
     ];
 
-    /** Cómo se muestran en pantalla (con tildes). */
+    /** Como se muestran en pantalla (con tildes). */
     public const ETIQUETAS = [
         'ciudadano' => 'Ciudadano',
         'encargado_estacion' => 'Encargado de estación',
@@ -30,7 +30,6 @@ class Rol extends Model
         'administrador' => 'Administrador',
         'administrador_deposito' => 'Administrador de depósito',
         'supervisor' => 'Supervisor',
-        'administrador_sistema' => 'Administrador del sistema',
     ];
 
     public function usuarios(): HasMany
@@ -43,7 +42,7 @@ class Rol extends Model
         return in_array($this->DES_ROL, self::DEL_SISTEMA, true);
     }
 
-    /** "administrador_sistema" → "Administrador del sistema" */
+    /** "rol_algo" = "rol algo " */
     protected function nombre(): Attribute
     {
         return Attribute::get(fn () => self::ETIQUETAS[$this->DES_ROL]

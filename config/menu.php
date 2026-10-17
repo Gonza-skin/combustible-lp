@@ -3,8 +3,8 @@
 return [
     ['titulo' => 'Inicio', 'ruta' => 'dashboard', 'roles' => []],
 
-    // ---- Administración (Gonzalo) ----
-    ['grupo' => 'Administración', 'titulo' => 'Usuarios', 'ruta' => 'usuarios.index', 'roles' => ['administrador', 'administrador_sistema']],
+    // admin
+    ['grupo' => 'Administración', 'titulo' => 'Usuarios', 'ruta' => 'usuarios.index', 'roles' => ['administrador']],
     ['grupo' => 'Administración', 'titulo' => 'Roles', 'ruta' => 'roles.index', 'roles' => ['administrador']],
     ['grupo' => 'Administración', 'titulo' => 'Tipos de combustible', 'ruta' => 'tipos-combustible.index', 'roles' => ['administrador']],
 

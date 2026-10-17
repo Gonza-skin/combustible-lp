@@ -17,7 +17,6 @@ class SistemaCombustibleSeeder extends Seeder
             ['DES_ROL' => 'administrador'],
             ['DES_ROL' => 'administrador_deposito'],
             ['DES_ROL' => 'supervisor'],
-            ['DES_ROL' => 'administrador_sistema'],
         ]);
 
         DB::table('tipo_combustible')->insert([

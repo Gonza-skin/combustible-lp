@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Crear cuenta — Sistema de Abastecimiento La Paz</title>
+    <title>Crear cuenta - Sistema de Abastecimiento La Paz</title>
     <style>
         :root { --petroleo: #123B5D; --verde: #27AE60; --texto: #1f2d3a; }
         * { box-sizing: border-box; }
@@ -52,7 +52,7 @@
         </form>
 
         <a class="volver" href="{{ route('login') }}">¿Ya tienes cuenta? Inicia sesión</a>
-        <a class="volver" href="{{ route('home') }}">← Volver al inicio</a>
+        <a class="volver" href="{{ route('home') }}">Volver al inicio</a>
     </main>
 </body>
 </html>
