@@ -1,11 +1,14 @@
 <?php
 
+use App\Support\AddsCheckConstraints;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    use AddsCheckConstraints;
+
     public function up(): void
     {
         Schema::create('tanque_almacenamiento', function (Blueprint $table) {
@@ -19,10 +22,13 @@ return new class extends Migration
 
             $table->foreign('COD_PLA')->references('COD_PLA')->on('planta_deposito');
             $table->foreign('COD_COM')->references('COD_COM')->on('tipo_combustible');
-            $table->check('CAP_TAN > 0', 'chk_tan_cap');
-            $table->check('NIV_TAN >= 0 AND NIV_TAN <= CAP_TAN', 'chk_tan_niv');
-            $table->check("ESD_TAN IN ('operativo','critico','mantenimiento','inactivo')", 'chk_tan_esd');
         });
+
+        $this->addCheckConstraints('tanque_almacenamiento', [
+            'chk_tan_cap' => 'CAP_TAN > 0',
+            'chk_tan_niv' => 'NIV_TAN >= 0 AND NIV_TAN <= CAP_TAN',
+            'chk_tan_esd' => "ESD_TAN IN ('operativo','critico','mantenimiento','inactivo')",
+        ]);
     }
 
     public function down(): void

@@ -1,5 +1,6 @@
 <?php
 
+use App\Support\AddsCheckConstraints;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -7,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
+    use AddsCheckConstraints;
+
     public function up(): void
     {
         Schema::create('auditoria', function (Blueprint $table) {
@@ -20,8 +23,11 @@ return new class extends Migration
             $table->timestamp('FEC_AUD')->useCurrent();
 
             $table->foreign('COD_USU')->references('COD_USU')->on('usuario');
-            $table->check("ACC_AUD IN ('INSERT','UPDATE','DELETE')", 'chk_aud_acc');
         });
+
+        $this->addCheckConstraints('auditoria', [
+            'chk_aud_acc' => "ACC_AUD IN ('INSERT','UPDATE','DELETE')",
+        ]);
 
         DB::unprepared("
             CREATE TRIGGER trg_auditoria_bu BEFORE UPDATE ON auditoria

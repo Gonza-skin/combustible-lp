@@ -44,9 +44,6 @@ class Usuario extends Authenticatable
     {
         return $this->belongsTo(Rol::class, 'COD_ROL', 'COD_ROL');
     }
-<<<<<<< HEAD
-}
-=======
 
     /**
      * ¿El usuario tiene alguno de estos roles?
@@ -62,4 +59,3 @@ class Usuario extends Authenticatable
         return in_array($this->rol?->DES_ROL, $roles, true);
     }
 }
->>>>>>> main

@@ -2,12 +2,22 @@
 
 use App\Http\Controllers\AlertaController;
 use App\Http\Controllers\AutomovilController;
+use App\Http\Controllers\CisternaController;
+use App\Http\Controllers\ConductorController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EstacionController;
+use App\Http\Controllers\ExistenciaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IncidenciaController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\MantenimientoCisternaController;
+use App\Http\Controllers\MovimientoController;
+use App\Http\Controllers\RecomendacionController;
+use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\ReporteCiudadanoAdminController;
 use App\Http\Controllers\ReporteCiudadanoController;
+use App\Http\Controllers\RolController;
+use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\VentaCombustibleController;
 use App\Http\Middleware\AlertaAccess;
 use App\Http\Middleware\AutomovilAccess;
@@ -17,60 +27,41 @@ use App\Http\Middleware\ReporteCiudadanoAdminAccess;
 use App\Http\Middleware\VentaCombustibleAccess;
 use Illuminate\Support\Facades\Route;
 
-// Inicio
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// Autenticación
 Route::view('/login', 'auth.login')->middleware('guest')->name('login');
 Route::post('/login', [LoginController::class, 'login'])->middleware('guest');
 Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth')->name('logout');
 Route::get('/registro', [RegistroController::class, 'create'])->middleware('guest')->name('registro');
 Route::post('/registro', [RegistroController::class, 'store'])->middleware('guest');
 
-// Panel principal
 Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware('auth')->name('dashboard');
-
-// Estaciones
-Route::resource('estaciones', EstacionController::class)
-    ->parameters(['estaciones' => 'estacion'])->except(['show']);
-
-// Existencias
-Route::get('/existencias', [ExistenciaController::class, 'index'])->name('existencias.index');
-Route::get('/existencias/{estacion}/{combustible}/ajustar', [ExistenciaController::class, 'ajustar'])
-    ->whereNumber(['estacion', 'combustible'])->name('existencias.ajustar');
-Route::post('/existencias/{estacion}/{combustible}/ajustar', [ExistenciaController::class, 'guardar'])
-    ->whereNumber(['estacion', 'combustible'])->name('existencias.guardar');
-
-// cisternas, conductores y mantenimientos
-Route::resource('cisternas', CisternaController::class)->parameters(['cisternas' => 'cisterna']);
-Route::resource('conductores', ConductorController::class)->parameters(['conductores' => 'conductor']);
-Route::resource('mantenimiento-cisternas', MantenimientoCisternaController::class)
-    ->parameters(['mantenimiento-cisternas' => 'mantenimiento_cisterna']);
-
-/*
-// Administración (activar cuando existan los controladores y middleware)
-use App\Http\Controllers\UsuarioController;
-use App\Http\Controllers\RolController;
-use App\Http\Controllers\TipoCombustibleController;
-
-Route::middleware(['auth', 'role:administrador,administrador_sistema'])->group(function () {
-    Route::resource('usuarios', UsuarioController::class);
-    Route::resource('roles', RolController::class);
-    Route::resource('tipos-combustible', TipoCombustibleController::class);
-});
-*/
-
     ->middleware('auth')
     ->name('dashboard');
 
-// ---- Administración solo rol administrador ----
+Route::resource('estaciones', EstacionController::class)
+    ->parameters(['estaciones' => 'estacion'])
+    ->except(['show']);
+
+Route::get('/existencias', [ExistenciaController::class, 'index'])->name('existencias.index');
+Route::get('/existencias/{estacion}/{combustible}/ajustar', [ExistenciaController::class, 'ajustar'])
+    ->whereNumber(['estacion', 'combustible'])
+    ->name('existencias.ajustar');
+Route::post('/existencias/{estacion}/{combustible}/ajustar', [ExistenciaController::class, 'guardar'])
+    ->whereNumber(['estacion', 'combustible'])
+    ->name('existencias.guardar');
+
+Route::resource('cisternas', CisternaController::class)
+    ->parameters(['cisternas' => 'cisterna']);
+Route::resource('conductores', ConductorController::class)
+    ->parameters(['conductores' => 'conductor']);
+Route::resource('mantenimiento-cisternas', MantenimientoCisternaController::class)
+    ->parameters(['mantenimiento-cisternas' => 'mantenimiento_cisterna']);
+
 Route::middleware(['auth', 'role:administrador'])->group(function () {
+    Route::resource('usuarios', UsuarioController::class);
     Route::get('/roles', [RolController::class, 'index'])->name('roles.index');
-
-Route::view('/login', 'auth.login')->name('login');
-
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+});
 
 Route::middleware(['auth', AutomovilAccess::class])
     ->prefix('automoviles')
@@ -130,50 +121,12 @@ Route::middleware(['auth', AlertaAccess::class])
         Route::get('/', [AlertaController::class, 'index'])->name('index');
     });
 
-/*
-// ---- Administración (descomentar cuando existan los controladores y el middleware) ----
-// Al activarlo, agrega arriba estos tres "use":
-// use App\Http\Controllers\UsuarioController;
-// use App\Http\Controllers\RolController;
-// use App\Http\Controllers\TipoCombustibleController;
-
-Route::middleware(['auth', 'role:administrador,administrador_sistema'])->group(function () {
-    Route::resource('usuarios', UsuarioController::class);
-    Route::resource('roles', RolController::class);
-    Route::resource('tipos-combustible', TipoCombustibleController::class);
-});
-
-// ---- Estaciones, existencias, movimientos y recomendaciones
-
-// Ver estaciones: cualquier usuario con sesion
-Route::get('/estaciones', [EstacionController::class, 'index'])
-    ->middleware('auth')
-    ->name('estaciones.index');
-
-// Crear, editar y eliminar estaciones solo administrador
-Route::middleware(['auth', 'role:administrador'])->group(function () {
-    Route::resource('estaciones', EstacionController::class)
-        ->parameters(['estaciones' => 'estacion'])
-        ->except(['index', 'show']);
-});
-
-// Existencias y ajuste encargado de estacion y administrador
-Route::middleware(['auth', 'role:encargado_estacion,administrador'])->group(function () {
-    Route::get('/existencias', [ExistenciaController::class, 'index'])->name('existencias.index');
-    Route::get('/existencias/{estacion}/{combustible}/ajustar', [ExistenciaController::class, 'ajustar'])
-        ->whereNumber(['estacion', 'combustible'])->name('existencias.ajustar');
-    Route::post('/existencias/{estacion}/{combustible}/ajustar', [ExistenciaController::class, 'guardar'])
-        ->whereNumber(['estacion', 'combustible'])->name('existencias.guardar');
-});
-
-// Movimientos (solo lectura) encargado, administrador y supervisor
-Route::get('/movimientos', [\App\Http\Controllers\MovimientoController::class, 'index'])
-    ->middleware(['auth', 'role:encargado_estacion,administrador,supervisor'])
+Route::middleware(['auth', 'role:encargado_estacion,administrador,supervisor'])
+    ->get('/movimientos', [MovimientoController::class, 'index'])
     ->name('movimientos.index');
 
-// Recomendacion de abastecimiento sub_administrador y administrador
-Route::get('/recomendaciones', [\App\Http\Controllers\RecomendacionController::class, 'index'])
-    ->middleware(['auth', 'role:sub_administrador,administrador'])
+Route::middleware(['auth', 'role:sub_administrador,administrador'])
+    ->get('/recomendaciones', [RecomendacionController::class, 'index'])
     ->name('recomendaciones.index');
+
 require __DIR__ . '/abastecimiento.php';
-*/

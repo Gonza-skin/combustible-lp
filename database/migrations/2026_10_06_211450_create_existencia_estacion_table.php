@@ -1,5 +1,6 @@
 <?php
 
+use App\Support\AddsCheckConstraints;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -7,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
+    use AddsCheckConstraints;
+
     public function up(): void
     {
         Schema::create('existencia_estacion', function (Blueprint $table) {
@@ -18,8 +21,11 @@ return new class extends Migration
             $table->primary(['COD_EST', 'COD_COM']);
             $table->foreign('COD_EST')->references('COD_EST')->on('estacion');
             $table->foreign('COD_COM')->references('COD_COM')->on('tipo_combustible');
-            $table->check('CAN_EXI >= 0', 'chk_exi_can');
         });
+
+        $this->addCheckConstraints('existencia_estacion', [
+            'chk_exi_can' => 'CAN_EXI >= 0',
+        ]);
 
         DB::unprepared("
             CREATE TRIGGER trg_existencia_ai AFTER INSERT ON existencia_estacion

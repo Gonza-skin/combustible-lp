@@ -18,8 +18,6 @@ return new class extends Migration
             $table->boolean('ACT_USU')->default(true);
             $table->timestamp('FEC_USU')->useCurrent();
 
-            $table->foreign('COD_ROL')->references('COD_ROL')->on('rol');
-            $table->foreign('COD_EST')->references('COD_EST')->on('estacion');
         });
     }
 

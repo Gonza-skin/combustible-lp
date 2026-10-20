@@ -1,5 +1,6 @@
 <?php
 
+use App\Support\AddsCheckConstraints;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -7,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
+    use AddsCheckConstraints;
+
     public function up(): void
     {
         Schema::create('abastecimiento', function (Blueprint $table) {
@@ -31,9 +34,12 @@ return new class extends Migration
             $table->foreign('COD_COM')->references('COD_COM')->on('tipo_combustible');
             $table->foreign('COD_CIS')->references('COD_CIS')->on('cisterna');
             $table->foreign('COD_USU')->references('COD_USU')->on('usuario');
-            $table->check('CAN_ABA > 0', 'chk_aba_can');
-            $table->check("ESD_ABA IN ('pendiente','asignado','en_transito','entregado','cerrado','cancelado')", 'chk_aba_esd');
         });
+
+        $this->addCheckConstraints('abastecimiento', [
+            'chk_aba_can' => 'CAN_ABA > 0',
+            'chk_aba_esd' => "ESD_ABA IN ('pendiente','asignado','en_transito','entregado','cerrado','cancelado')",
+        ]);
 
         DB::unprepared("
             CREATE TRIGGER trg_abastecimiento_bi BEFORE INSERT ON abastecimiento

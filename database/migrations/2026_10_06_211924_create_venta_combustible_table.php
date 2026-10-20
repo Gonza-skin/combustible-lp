@@ -1,5 +1,6 @@
 <?php
 
+use App\Support\AddsCheckConstraints;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -7,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
+    use AddsCheckConstraints;
+
     public function up(): void
     {
         Schema::create('venta_combustible', function (Blueprint $table) {
@@ -24,10 +27,13 @@ return new class extends Migration
             $table->foreign('COD_VEH')->references('COD_VEH')->on('automovil');
             $table->foreign('COD_COM')->references('COD_COM')->on('tipo_combustible');
             $table->foreign('COD_USU')->references('COD_USU')->on('usuario');
-            $table->check('CAN_VEN > 0', 'chk_ven_can');
-            $table->check('PRE_VEN > 0', 'chk_ven_pre');
             $table->index(['COD_VEH', 'FEC_VEN'], 'idx_ven_veh_fec');
         });
+
+        $this->addCheckConstraints('venta_combustible', [
+            'chk_ven_can' => 'CAN_VEN > 0',
+            'chk_ven_pre' => 'PRE_VEN > 0',
+        ]);
 
         DB::unprepared("
             CREATE TRIGGER trg_venta_ai AFTER INSERT ON venta_combustible
