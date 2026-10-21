@@ -35,8 +35,11 @@
         .muted { color: #607d8b; }
         @media (max-width: 600px) { header { padding: 16px 20px; } main { margin-top: 18px; padding: 0 12px; } .panel { padding: 16px; } }
     </style>
+    @include('partials.tema-head')
 </head>
 <body>
+    @include('partials.tema-body')
+    @include('partials.dashboard-sidebar')
     <header>
         <h1>Sistema de Control y Gestión — @yield('heading')</h1>
         <nav class="nav" aria-label="Navegación">

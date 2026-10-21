@@ -6,8 +6,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Control de conductores</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @include('partials.tema-head')
 </head>
 <body class="min-h-screen bg-[#f4f6f8] text-[#2c3e50] font-sans">
+    @include('partials.tema-body')
+    @include('partials.dashboard-sidebar')
     <main class="mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
         <div class="p-6">
             <div class="mb-6 flex flex-wrap items-center justify-between gap-4">

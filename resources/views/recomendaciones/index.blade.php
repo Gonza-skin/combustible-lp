@@ -38,8 +38,11 @@
         .badge.azul { background: var(--tecnologico); }
         .nota { color: #607d8b; font-size: 13px; margin-top: 12px; line-height: 1.6; }
     </style>
+    @include('partials.tema-head')
 </head>
 <body>
+    @include('partials.tema-body')
+    @include('partials.dashboard-sidebar')
     <header>
         <h1>Sistema de Control y Gestión de Abastecimiento de Combustible — Municipio de La Paz</h1>
     </header>

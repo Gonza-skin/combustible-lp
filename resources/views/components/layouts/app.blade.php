@@ -11,8 +11,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $title ? $title.' — ' : '' }}Sistema de Abastecimiento La Paz</title>
     <link rel="stylesheet" href="{{ asset('css/sistema.css') }}">
+    @include('partials.tema-head')
 </head>
 <body>
+@include('partials.tema-body')
 <div class="app">
     <header class="app__barra">
         <a class="app__marca" href="{{ auth()->check() ? route('dashboard') : route('home') }}">
@@ -34,21 +36,7 @@
 
     <nav class="menu" aria-label="Menú principal">
         @auth
-            @php($grupoActual = null)
-            @foreach (config('menu', []) as $item)
-                @continue(! \Illuminate\Support\Facades\Route::has($item['ruta']))
-                @continue(! auth()->user()->tieneRol(...($item['roles'] ?? [])))
-                @if (($item['grupo'] ?? null) !== $grupoActual)
-                    @php($grupoActual = $item['grupo'] ?? null)
-                    @if ($grupoActual)
-                        <div class="menu__titulo">{{ $grupoActual }}</div>
-                    @endif
-                @endif
-                <a href="{{ route($item['ruta']) }}"
-                   @class(['activo' => request()->routeIs(\Illuminate\Support\Str::beforeLast($item['ruta'], '.').'.*') || request()->routeIs($item['ruta'])])>
-                    {{ $item['titulo'] }}
-                </a>
-            @endforeach
+            @include('partials.dashboard-menu')
         @endauth
     </nav>
 

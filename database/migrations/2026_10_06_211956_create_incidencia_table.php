@@ -3,8 +3,8 @@
 use App\Support\AddsCheckConstraints;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -35,6 +35,29 @@ return new class extends Migration
             'chk_inc_frs' => "ESD_INC NOT IN ('resuelta','cerrada') OR FRS_INC IS NOT NULL",
         ]);
 
+        if (DB::connection()->getDriverName() === 'pgsql') {
+            DB::unprepared(<<<'SQL'
+                CREATE FUNCTION validar_transicion_incidencia() RETURNS TRIGGER AS $$
+                BEGIN
+                    IF NEW."ESD_INC" <> OLD."ESD_INC"
+                        AND NOT (
+                            (OLD."ESD_INC" = 'detectada' AND NEW."ESD_INC" = 'en_revision')
+                            OR (OLD."ESD_INC" = 'en_revision' AND NEW."ESD_INC" = 'resuelta')
+                            OR (OLD."ESD_INC" = 'resuelta' AND NEW."ESD_INC" = 'cerrada')
+                        )
+                    THEN
+                        RAISE EXCEPTION 'Transicion de estado no permitida: detectada > en_revision > resuelta > cerrada';
+                    END IF;
+
+                    RETURN NEW;
+                END;
+                $$ LANGUAGE plpgsql
+            SQL);
+            DB::unprepared('CREATE TRIGGER trg_incidencia_bu BEFORE UPDATE ON incidencia FOR EACH ROW EXECUTE FUNCTION validar_transicion_incidencia()');
+
+            return;
+        }
+
         DB::unprepared("
             CREATE TRIGGER trg_incidencia_bu BEFORE UPDATE ON incidencia
             FOR EACH ROW
@@ -52,6 +75,11 @@ return new class extends Migration
 
     public function down(): void
     {
+        if (DB::connection()->getDriverName() === 'pgsql') {
+            DB::unprepared('DROP TRIGGER IF EXISTS trg_incidencia_bu ON incidencia');
+            DB::unprepared('DROP FUNCTION IF EXISTS validar_transicion_incidencia()');
+        }
+
         DB::unprepared('DROP TRIGGER IF EXISTS trg_incidencia_bu');
         Schema::dropIfExists('incidencia');
     }

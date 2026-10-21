@@ -32,8 +32,11 @@
         .badge.rojo { background: var(--rojo); }
         .aviso-ok { background: #e6f6ec; border-left: 4px solid var(--verde); padding: 10px 14px; border-radius: 6px; margin-bottom: 14px; }
     </style>
+    @include('partials.tema-head')
 </head>
 <body>
+    @include('partials.tema-body')
+    @include('partials.dashboard-sidebar')
     <header>
         <h1>Sistema de Control y Gestión de Abastecimiento de Combustible — Municipio de La Paz</h1>
     </header>

@@ -6,8 +6,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Mantenimiento de Cisternas</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @include('partials.tema-head')
 </head>
 <body class="min-h-screen bg-slate-50 text-slate-800">
+    @include('partials.tema-body')
+    @include('partials.dashboard-sidebar')
     <div class="mx-auto max-w-4xl p-6">
         <h2 class="mb-6 text-3xl font-bold text-[#1F4E5F]">Editar mantenimiento #{{ $mantenimiento->COD_MAN }}</h2>
 

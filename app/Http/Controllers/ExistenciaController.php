@@ -13,12 +13,12 @@ class ExistenciaController extends Controller
             ->crossJoin('tipo_combustible as t')
             ->leftJoin('existencia_estacion as x', function ($join) {
                 $join->on('x.COD_EST', '=', 'e.COD_EST')
-                     ->on('x.COD_COM', '=', 't.COD_COM');
+                    ->on('x.COD_COM', '=', 't.COD_COM');
             })
             ->select(
                 'e.COD_EST', 'e.NOM_EST', 'e.MIN_EST', 'e.MAX_EST', 'e.ESD_EST',
                 't.COD_COM', 't.DES_COM',
-                DB::raw('COALESCE(x.CAN_EXI, 0) as CAN_EXI'),
+                DB::raw('COALESCE(x."CAN_EXI", 0) as "CAN_EXI"'),
                 'x.FEC_EXI'
             );
 
@@ -73,14 +73,14 @@ class ExistenciaController extends Controller
 
         $datos = $request->validate([
             'CANTIDAD' => 'required|numeric|min:0|max:99999999',
-            'MOTIVO'   => 'required|string|max:120',
+            'MOTIVO' => 'required|string|max:120',
         ]);
 
         $nueva = round((float) $datos['CANTIDAD'], 2);
 
         if ((float) $fila->MAX_EST > 0 && $nueva > (float) $fila->MAX_EST) {
             return back()
-                ->withErrors(['CANTIDAD' => 'La cantidad no puede superar el máximo de la estación (' . number_format($fila->MAX_EST, 2) . ' L).'])
+                ->withErrors(['CANTIDAD' => 'La cantidad no puede superar el máximo de la estación ('.number_format($fila->MAX_EST, 2).' L).'])
                 ->withInput();
         }
 
@@ -116,7 +116,7 @@ class ExistenciaController extends Controller
                     'TIP_MOV' => $diferencia > 0 ? 'entrada' : 'salida',
                     'CAN_MOV' => abs($diferencia),
                     'COD_USU' => $usuarioId,
-                    'REF_MOV' => 'Ajuste: ' . $datos['MOTIVO'],
+                    'REF_MOV' => 'Ajuste: '.$datos['MOTIVO'],
                 ]);
             }
         });

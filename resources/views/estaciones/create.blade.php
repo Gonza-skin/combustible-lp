@@ -33,8 +33,11 @@
         input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         input[type=number] { -moz-appearance: textfield; appearance: textfield; }
     </style>
+    @include('partials.tema-head')
 </head>
 <body>
+    @include('partials.tema-body')
+    @include('partials.dashboard-sidebar')
     <header>
         <h1>Sistema de Control y Gestión de Abastecimiento de Combustible — Municipio de La Paz</h1>
     </header>

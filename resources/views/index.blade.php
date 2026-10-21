@@ -122,8 +122,10 @@
             font-size: 13px;
         }
     </style>
+    @include('partials.tema-head')
 </head>
 <body>
+    @include('partials.tema-body')
 
     <header>
         <div class="logo">Sistema de Abastecimiento — La Paz</div>

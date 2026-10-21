@@ -21,5 +21,4 @@
     <p>Tu rol no tiene secciones en este módulo.</p>
 @endforelse
 </div>
-<style>.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:14px}.tarjeta{display:flex;flex-direction:column;gap:6px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:16px;color:#111827;text-decoration:none}.tarjeta:hover{border-color:#1e3a8a;background:#eef2ff}.tarjeta span{font-size:13px;color:#4b5563}</style>
 @endsection

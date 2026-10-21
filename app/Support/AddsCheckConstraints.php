@@ -14,6 +14,7 @@ trait AddsCheckConstraints
         $wrappedTable = $grammar->wrapTable($table);
 
         foreach ($constraints as $name => $expression) {
+            if ($connection->getDriverName() === 'pgsql') { $expression = preg_replace('/\b([A-Z]{3}_[A-Z]{3})\b/', '"$1"', $expression); } // pgsql-comillas
             if (! preg_match('/^[a-z][a-z0-9_]*$/', $name)) {
                 throw new RuntimeException("Invalid check constraint name: {$name}");
             }
