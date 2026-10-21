@@ -130,3 +130,5 @@ Route::middleware(['auth', 'role:sub_administrador,administrador'])
     ->name('recomendaciones.index');
 
 require __DIR__ . '/abastecimiento.php';
+// Investigación Operativa II: Teoría de decisiones y Cadenas de Markov (módulo nuevo)
+require __DIR__ . '/investigacion.php';
