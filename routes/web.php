@@ -150,3 +150,6 @@ Route::middleware(['auth', AlertaAccess::class])
     ->group(function () {
         Route::get('/', [AlertaController::class, 'index'])->name('index');
     });
+
+    // ---- Modulo de abastecimiento (plantas, tanques, solicitudes, gestion, historial) ----
+require __DIR__ . '/abastecimiento.php';
