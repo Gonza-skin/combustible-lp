@@ -10,7 +10,9 @@
         .io-filtros{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
         .io-filtros label{display:block;font-size:12px;color:var(--texto-suave,#667);margin-bottom:4px}
         .io-filtros input,.io-filtros select{padding:8px 10px;border:1px solid var(--borde,#ccc);border-radius:9px;background:var(--campo-fondo,#fff);color:inherit}
-        .io-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+        .io-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:20px}
+        .io-grid>div{min-width:0}
+        .io-mat-wrap{overflow-x:auto}
         .io-mat td,.io-mat th{text-align:center;padding:8px 12px;border:1px solid var(--borde,#ddd)}
         .io-mat td{font-weight:600}
         .io-pill{display:inline-block;padding:2px 10px;border-radius:99px;font-size:12px;border:1px solid var(--borde,#ccc)}
@@ -91,6 +93,7 @@
             <div class="io-grid">
                 <div>
                     <strong>Matriz de transición P</strong>
+                    <div class="io-mat-wrap">
                     <table class="io-mat" style="border-collapse:collapse;margin-top:8px">
                         <tr><th>Hoy ↓ / Mañana →</th>@foreach ($estados as $e)<th>{{ $e }}</th>@endforeach</tr>
                         @foreach ($d['matriz'] as $i => $fila)
@@ -100,6 +103,7 @@
                             @endforeach</tr>
                         @endforeach
                     </table>
+                    </div>
                     @if ($d['conteos'])<p class="io-nota">Armada con {{ $d['transiciones'] }} transiciones observadas (p<sub>ij</sub> = n<sub>ij</sub> / n<sub>i</sub>).</p>@endif
                 </div>
                 <div>

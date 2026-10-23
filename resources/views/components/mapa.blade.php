@@ -14,7 +14,7 @@
 <script>
     (function () {
         const puntos = @json($puntos);
-        const colores = { normal: '#27AE60', nivel_bajo: '#123B5D', sin_combustible: '#8a97a3' };
+        const colores = { normal: '#4BB8B0', nivel_bajo: '#D9B05A', sin_combustible: '#D96C5F' };
 
         const mapa = L.map('mapa').setView([-16.5, -68.15], 12);   // La Paz
 

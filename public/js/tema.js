@@ -1,7 +1,7 @@
 (function () {
   var raiz = document.documentElement;
   var reducir = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var color = '#8b5cf6';
+  var color = '#4bb8b0';
   function leerColor() { color = getComputedStyle(raiz).getPropertyValue('--ac').trim() || color; }
 
   var boton = document.getElementById('cambiarTema');
@@ -10,14 +10,22 @@
     boton.id = 'cambiarTema';
     boton.type = 'button';
     boton.className = 'tema-flotante';
-    document.body.appendChild(boton);
+    var destino = document.querySelector('.home-header__actions')
+      || document.querySelector('.app__barra')
+      || document.querySelector('body.con-sidebar > header');
+    if (destino) {
+      destino.appendChild(boton);
+    } else {
+      boton.classList.add('tema-flotante--fijo');
+      document.body.appendChild(boton);
+    }
   }
 
   function actualizarBoton() {
-    var temaClaro = raiz.getAttribute('data-tema') === 'claro';
-    boton.textContent = temaClaro ? 'Modo oscuro' : 'Modo claro';
-    boton.setAttribute('aria-label', temaClaro ? 'Activar modo oscuro' : 'Activar modo claro');
-    boton.setAttribute('aria-pressed', temaClaro ? 'true' : 'false');
+    var temaOscuro = raiz.getAttribute('data-tema') === 'oscuro';
+    boton.textContent = temaOscuro ? 'Modo claro' : 'Modo oscuro';
+    boton.setAttribute('aria-label', temaOscuro ? 'Activar modo claro' : 'Activar modo oscuro');
+    boton.setAttribute('aria-pressed', temaOscuro ? 'true' : 'false');
     leerColor();
   }
 

@@ -1,24 +1,25 @@
-/* 
-   sistema.css — estilos compartidos para todo el sistema 
-   NUESTROS COLOR PRINCIPALES SON EL AZUL PETROLEO Y VERDE
-*/
+/* Estilos compartidos para el sistema. Los colores se complementan en tema.css. */
 :root {
-    --azul: #123B5D;
-    --azul-oscuro: #0b2740;
-    --azul-suave: #e7edf3;
-    --verde: #27AE60;
-    --verde-oscuro: #1f9150;
-    --verde-suave: #e4f5eb;
-    --verde-texto: #1b7a43;
+    --azul: #1D3A4A;
+    --azul-oscuro: #142D3A;
+    --azul-suave: #E7EFEF;
+    --verde: #42B3A7;
+    --verde-oscuro: #2D8D85;
+    --verde-suave: #E2F2EF;
+    --verde-texto: #246E68;
 
-    --texto: #1f2d3a;
-    --texto-suave: #5b6b79;
-    --borde: #d5dde4;
-    --fondo: #f4f6f8;
-    --blanco: #ffffff;
+    --texto: #223842;
+    --texto-suave: #64737A;
+    --borde: #DEDBD1;
+    --fondo: #F5F2E9;
+    --blanco: #FFFEFA;
+    --mostaza: #D5A84F;
+    --mostaza-suave: #FAF2DF;
+    --coral: #D5685C;
+    --coral-suave: #FAE9E6;
 
     --radio: 10px;
-    --sombra: 0 2px 8px rgba(18, 59, 93, .10);
+    --sombra: 0 2px 8px rgba(32, 58, 69, .10);
 }
 
 * { box-sizing: border-box; }
@@ -82,7 +83,7 @@ h1, h2, h3 { color: var(--azul); margin: 0; }
 .stat { background: var(--blanco); border-radius: var(--radio); box-shadow: var(--sombra); padding: 18px 22px; border-top: 4px solid var(--verde); }
 .stat__valor { font-size: 2rem; font-weight: 700; color: var(--azul); line-height: 1.1; }
 .stat__texto { margin-top: 4px; color: var(--texto-suave); font-size: .92rem; }
-.stat--alerta { border-top-color: var(--azul); background: var(--azul-suave); }
+.stat--alerta { border-top-color: var(--mostaza); background: var(--mostaza-suave); }
 
 /* BOTONES*/
 .btn {
@@ -116,9 +117,9 @@ h1, h2, h3 { color: var(--azul); margin: 0; }
 }
 .campo input:focus, .campo select:focus { border-color: var(--azul); }
 .campo input:disabled, .campo select:disabled { background: var(--fondo); color: var(--texto-suave); }
-.campo input.tiene-error, .campo select.tiene-error { border-color: var(--azul); border-width: 2px; }
+.campo input.tiene-error, .campo select.tiene-error { border-color: var(--coral); border-width: 2px; }
 .campo .hint { display: block; margin-top: 4px; color: var(--texto-suave); font-size: .8rem; }
-.campo .error-texto { display: block; margin-top: 4px; color: var(--azul); font-size: .84rem; font-weight: 700; }
+.campo .error-texto { display: block; margin-top: 4px; color: var(--coral); font-size: .84rem; font-weight: 700; }
 .campo .error-texto::before { content: '! '; }
 .campo--check label { display: flex; align-items: center; gap: 8px; font-weight: 500; }
 .campo--check input { width: 18px; height: 18px; accent-color: var(--verde); }
@@ -146,7 +147,7 @@ h1, h2, h3 { color: var(--azul); margin: 0; }
 /* ALERTAS */
 .alerta { padding: 12px 16px; border-radius: 8px; margin-bottom: 18px; font-size: .92rem; border-left: 5px solid; }
 .alerta--exito { background: var(--verde-suave); border-color: var(--verde); color: var(--verde-texto); }
-.alerta--error { background: var(--azul-suave); border-color: var(--azul); color: var(--azul); font-weight: 600; }
+.alerta--error { background: var(--coral-suave); border-color: var(--coral); color: #963E34; font-weight: 600; }
 
 /* LA PAGINAS */
 .paginacion { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 16px; font-size: .9rem; }
@@ -170,8 +171,8 @@ h1, h2, h3 { color: var(--azul); margin: 0; }
 .leyenda span { display: flex; align-items: center; gap: 6px; }
 .punto { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
 .punto--disponible { background: var(--verde); }
-.punto--escasez { background: var(--azul); }
-.punto--agotado { background: #8a97a3; }
+.punto--escasez { background: var(--mostaza); }
+.punto--agotado { background: var(--coral); }
 .mapa { width: 100%; border-radius: 8px; border: 1px solid var(--borde); }
 .mapa-aviso { padding: 18px 20px; border-radius: 8px; background: var(--azul-suave); color: var(--azul); font-size: .92rem; }
 .mapa-aviso code { background: #fff; padding: 1px 6px; border-radius: 4px; }

@@ -11,4 +11,9 @@ Route::middleware(['auth', 'role:sub_administrador,administrador'])->group(funct
 
 Route::middleware(['auth', 'role:sub_administrador,administrador,supervisor'])->group(function () {
     Route::get('/investigacion/markov', [MarkovController::class, 'index'])->name('markov.index');
+    Route::view('/investigacion/laboratorio', 'investigacion.laboratorio')->name('laboratorio.index');
+});
+
+Route::middleware(['auth', 'role:sub_administrador,administrador,supervisor'])->group(function () {
+    Route::get('/investigacion/markov', [MarkovController::class, 'index'])->name('markov.index');
 });

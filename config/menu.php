@@ -16,5 +16,6 @@ return [
         // ---- Investigación Operativa II ----
     ['grupo' => 'Investigación Operativa', 'titulo' => 'Teoría de decisiones', 'ruta' => 'decisiones.index', 'roles' => ['sub_administrador', 'administrador']],
     ['grupo' => 'Investigación Operativa', 'titulo' => 'Predicción Markov', 'ruta' => 'markov.index', 'roles' => ['sub_administrador', 'administrador', 'supervisor']],
+        ['grupo' => 'Investigación Operativa', 'titulo' => 'Laboratorio (demo)', 'ruta' => 'laboratorio.index', 'roles' => ['sub_administrador', 'administrador', 'supervisor']],
 
     ];

@@ -18,6 +18,7 @@
 <div class="app">
     <header class="app__barra">
         <a class="app__marca" href="{{ auth()->check() ? route('dashboard') : route('home') }}">
+            <img class="app__logo" src="{{ asset('images/logo-combustible-la-paz.png') }}" alt="">
             Sistema de Abastecimiento — La Paz
         </a>
         @auth

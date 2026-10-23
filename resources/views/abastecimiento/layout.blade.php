@@ -23,7 +23,10 @@
 @endphp
 <div class="app">
     <header class="app__barra">
-        <a class="app__marca" href="{{ url('/abastecimiento') }}">Sistema de Abastecimiento — La Paz</a>
+        <a class="app__marca" href="{{ url('/abastecimiento') }}">
+            <img class="app__logo" src="{{ asset('images/logo-combustible-la-paz.png') }}" alt="">
+            Sistema de Abastecimiento — La Paz
+        </a>
         <div class="app__usuario">
             <span>{{ auth()->user()->NOM_USU }}</span>
             <span class="rol-chip">{{ $rolActual }}</span>
