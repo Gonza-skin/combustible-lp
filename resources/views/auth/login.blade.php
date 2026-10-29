@@ -59,8 +59,10 @@
         .error { margin: -8px 0 14px; font-size: .85rem; color: var(--error); }
         .volver { display: block; margin-top: 18px; text-align: center; font-size: .85rem; color: var(--petroleo); }
     </style>
+    @include('partials.tema-head')
 </head>
-<body>
+<body class="pagina-login">
+    @include('partials.tema-body')
     <main class="tarjeta">
         <h1>Iniciar sesión</h1>
         <p class="sub">Sistema de Abastecimiento - La Paz</p>

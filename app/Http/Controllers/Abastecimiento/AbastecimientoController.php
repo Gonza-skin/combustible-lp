@@ -158,7 +158,7 @@ class AbastecimientoController extends Controller
             return back()->withErrors($e->getMessage());
         }
 
-        return redirect()->route('abast.gestion.show', $abastecimiento->COD_ABA)->with('ok', 'Cisterna asignada.');
+        return redirect()->route('abast.gestion.show', $abastecimiento)->with('ok', 'Cisterna asignada.');
     }
 
     // Cambiar estado siguiendo el flujo
@@ -210,6 +210,6 @@ class AbastecimientoController extends Controller
             return back()->withErrors($e->getMessage());
         }
 
-        return redirect()->route('abast.gestion.show', $abastecimiento->COD_ABA)->with('ok', 'Estado actualizado.');
+        return redirect()->route('abast.gestion.show', $abastecimiento)->with('ok', 'Estado actualizado.');
     }
 }

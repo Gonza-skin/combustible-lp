@@ -24,8 +24,10 @@
         .error::before { content: '! '; }
         .volver { display: block; margin-top: 18px; text-align: center; font-size: .85rem; color: var(--petroleo); }
     </style>
+    @include('partials.tema-head')
 </head>
-<body>
+<body class="pagina-login">
+    @include('partials.tema-body')
     <main class="tarjeta">
         <h1>Crear cuenta</h1>
         <p class="sub">Regístrate para consultar estaciones y disponibilidad.</p>

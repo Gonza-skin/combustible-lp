@@ -6,8 +6,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Mantenimiento de Cisternas</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @include('partials.tema-head')
 </head>
 <body class="min-h-screen bg-slate-50 text-slate-800">
+    @include('partials.tema-body')
+    @include('partials.dashboard-sidebar')
     <div class="mx-auto max-w-4xl p-6">
         <h2 class="mb-6 text-3xl font-bold text-[#1F4E5F]">Editar mantenimiento #{{ $mantenimiento->COD_MAN }}</h2>
 
@@ -23,7 +26,7 @@
         @endif
 
         <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm md:p-8">
-            <form action="{{ route('mantenimiento-cisternas.update', $mantenimiento->COD_MAN) }}" method="POST" class="space-y-6">
+            <form action="{{ route('mantenimiento-cisternas.update', $mantenimiento) }}" method="POST" class="space-y-6">
                 @csrf @method('PUT')
                 <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                     <div>

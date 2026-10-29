@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\UsaHashid;
 use Illuminate\Database\Eloquent\Model;
 
 class Cisterna extends Model
 {
+    use UsaHashid;
+
     protected $table = 'cisterna';
     protected $primaryKey = 'COD_CIS';
     public $timestamps = false;

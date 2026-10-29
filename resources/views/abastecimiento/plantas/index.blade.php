@@ -9,8 +9,8 @@
     <td>{{ $p->COD_PLA }}</td><td>{{ $p->NOM_PLA }}</td><td>{{ $p->UBI_PLA }}</td><td>{{ $p->tanques_count }}</td>
     <td>{{ $p->ACT_PLA ? 'Sí' : 'No' }}</td>
     <td class="acciones">
-        <a class="btn sec" href="{{ route('abast.plantas.edit', $p->COD_PLA) }}">Editar</a>
-        <form method="POST" action="{{ route('abast.plantas.destroy', $p->COD_PLA) }}" onsubmit="return confirm('¿Eliminar esta planta?')">
+        <a class="btn sec" href="{{ route('abast.plantas.edit', $p) }}">Editar</a>
+        <form method="POST" action="{{ route('abast.plantas.destroy', $p) }}" onsubmit="return confirm('¿Eliminar esta planta?')">
             @csrf @method('DELETE')<button class="btn rojo" type="submit">Eliminar</button>
         </form>
     </td>

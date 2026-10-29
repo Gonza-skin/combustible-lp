@@ -1,11 +1,14 @@
 <?php
 
+use App\Support\AddsCheckConstraints;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    use AddsCheckConstraints;
+
     public function up(): void
     {
         Schema::create('cisterna', function (Blueprint $table) {
@@ -18,9 +21,12 @@ return new class extends Migration
 
             $table->foreign('COD_COM')->references('COD_COM')->on('tipo_combustible');
             $table->foreign('COD_CON')->references('COD_CON')->on('conductor');
-            $table->check('CAP_CIS > 0', 'chk_cis_cap');
-            $table->check("ESD_CIS IN ('disponible','asignada','en_transito','mantenimiento')", 'chk_cis_esd');
         });
+
+        $this->addCheckConstraints('cisterna', [
+            'chk_cis_cap' => 'CAP_CIS > 0',
+            'chk_cis_esd' => "ESD_CIS IN ('disponible','asignada','en_transito','mantenimiento')",
+        ]);
     }
 
     public function down(): void

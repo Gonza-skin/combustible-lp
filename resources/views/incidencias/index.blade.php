@@ -33,9 +33,9 @@
                             <td>{{ $incidencia->COD_TAN ?: '—' }}</td>
                             <td>
                                 <div class="actions">
-                                    <a class="button secondary" href="{{ route('incidencias.show', $incidencia->COD_INC) }}">Ver</a>
-                                    <a class="button" href="{{ route('incidencias.edit', $incidencia->COD_INC) }}">Editar</a>
-                                    <form method="POST" action="{{ route('incidencias.destroy', $incidencia->COD_INC) }}" onsubmit="return confirm('¿Eliminar esta incidencia?')">
+                                    <a class="button secondary" href="{{ route('incidencias.show', $incidencia) }}">Ver</a>
+                                    <a class="button" href="{{ route('incidencias.edit', $incidencia) }}">Editar</a>
+                                    <form method="POST" action="{{ route('incidencias.destroy', $incidencia) }}" onsubmit="return confirm('¿Eliminar esta incidencia?')">
                                         @csrf
                                         @method('DELETE')
                                         <button class="button danger" type="submit">Eliminar</button>

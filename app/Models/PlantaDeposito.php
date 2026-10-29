@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\UsaHashid;
 use Illuminate\Database\Eloquent\Model;
 
 class PlantaDeposito extends Model
 {
+    use UsaHashid;
+
     protected $table = 'planta_deposito';
     protected $primaryKey = 'COD_PLA';
     public $timestamps = false;

@@ -1,11 +1,14 @@
 <?php
 
+use App\Support\AddsCheckConstraints;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    use AddsCheckConstraints;
+
     public function up(): void
     {
         Schema::create('reporte_ciudadano', function (Blueprint $table) {
@@ -19,10 +22,13 @@ return new class extends Migration
 
             $table->foreign('COD_EST')->references('COD_EST')->on('estacion');
             $table->foreign('COD_USU')->references('COD_USU')->on('usuario');
-            $table->check("FIL_REP IN ('sin_fila','corta','moderada','larga')", 'chk_rep_fil');
-            $table->check("DIS_REP IN ('disponible','poco_stock','agotado')", 'chk_rep_dis');
             $table->index(['COD_EST', 'FEC_REP'], 'idx_rep_est_fec');
         });
+
+        $this->addCheckConstraints('reporte_ciudadano', [
+            'chk_rep_fil' => "FIL_REP IN ('sin_fila','corta','moderada','larga')",
+            'chk_rep_dis' => "DIS_REP IN ('disponible','poco_stock','agotado')",
+        ]);
     }
 
     public function down(): void

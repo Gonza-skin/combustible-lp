@@ -20,7 +20,7 @@
         </dl>
         <div class="actions" style="margin-top: 20px">
             <a class="button secondary" href="{{ route('incidencias.index') }}">Volver al listado</a>
-            <a class="button" href="{{ route('incidencias.edit', $incidencia->COD_INC) }}">Editar</a>
+            <a class="button" href="{{ route('incidencias.edit', $incidencia) }}">Editar</a>
         </div>
     </section>
 @endsection

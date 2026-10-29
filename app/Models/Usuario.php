@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\UsaHashid;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Usuario extends Authenticatable
 {
+    use UsaHashid;
+
     protected $table = 'usuario';
     protected $primaryKey = 'COD_USU';
     public $timestamps = false;
@@ -44,9 +47,6 @@ class Usuario extends Authenticatable
     {
         return $this->belongsTo(Rol::class, 'COD_ROL', 'COD_ROL');
     }
-<<<<<<< HEAD
-}
-=======
 
     /**
      * ¿El usuario tiene alguno de estos roles?
@@ -62,4 +62,3 @@ class Usuario extends Authenticatable
         return in_array($this->rol?->DES_ROL, $roles, true);
     }
 }
->>>>>>> main

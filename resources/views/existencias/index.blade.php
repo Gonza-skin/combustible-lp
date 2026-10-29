@@ -32,8 +32,11 @@
         .badge.rojo { background: var(--rojo); }
         .aviso-ok { background: #e6f6ec; border-left: 4px solid var(--verde); padding: 10px 14px; border-radius: 6px; margin-bottom: 14px; }
     </style>
+    @include('partials.tema-head')
 </head>
 <body>
+    @include('partials.tema-body')
+    @include('partials.dashboard-sidebar')
     <header>
         <h1>Sistema de Control y Gestión de Abastecimiento de Combustible — Municipio de La Paz</h1>
     </header>
@@ -70,7 +73,7 @@
                         <td class="num">{{ number_format($f->MAX_EST, 2) }}</td>
                         <td><span class="badge {{ $color }}">{{ $texto }}</span></td>
                         <td>{{ $f->FEC_EXI ?? 'Sin registro' }}</td>
-                        <td><a class="btn" href="{{ route('existencias.ajustar', [$f->COD_EST, $f->COD_COM]) }}">Ajustar</a></td>
+                        <td><a class="btn" href="{{ route('existencias.ajustar', [\App\Models\Estacion::encodeRouteKey($f->COD_EST), \App\Models\TipoCombustible::encodeRouteKey($f->COD_COM)]) }}">Ajustar</a></td>
                     </tr>
                 @empty
                     <tr><td colspan="8">No hay estaciones activas. Crea una primero en Estaciones.</td></tr>

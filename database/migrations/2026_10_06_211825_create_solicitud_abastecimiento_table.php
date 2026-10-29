@@ -1,11 +1,14 @@
 <?php
 
+use App\Support\AddsCheckConstraints;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    use AddsCheckConstraints;
+
     public function up(): void
     {
         Schema::create('solicitud_abastecimiento', function (Blueprint $table) {
@@ -20,9 +23,12 @@ return new class extends Migration
             $table->foreign('COD_EST')->references('COD_EST')->on('estacion');
             $table->foreign('COD_COM')->references('COD_COM')->on('tipo_combustible');
             $table->foreign('COD_USU')->references('COD_USU')->on('usuario');
-            $table->check('CAN_SOL > 0', 'chk_sol_can');
-            $table->check("ESD_SOL IN ('pendiente','atendida','cancelada')", 'chk_sol_esd');
         });
+
+        $this->addCheckConstraints('solicitud_abastecimiento', [
+            'chk_sol_can' => 'CAN_SOL > 0',
+            'chk_sol_esd' => "ESD_SOL IN ('pendiente','atendida','cancelada')",
+        ]);
     }
 
     public function down(): void

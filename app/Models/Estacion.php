@@ -1,8 +1,13 @@
 <?php
 namespace App\Models;
+
+use App\Models\Concerns\UsaHashid;
 use Illuminate\Database\Eloquent\Model;
+
 class Estacion extends Model
 {
+    use UsaHashid;
+
     protected $table = 'estacion';
     protected $primaryKey = 'COD_EST';
     public $timestamps = false;

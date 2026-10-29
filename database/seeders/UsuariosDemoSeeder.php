@@ -7,14 +7,13 @@ use App\Models\Usuario;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
-/* USUARIOS DE PRIUEBA PARA EL SISTEMA */ 
+/* USUARIOS DE PRIUEBA PARA EL SISTEMA */
 class UsuariosDemoSeeder extends Seeder
 {
     public function run(): void
     {
         $usuarios = [
             ['rol' => 'administrador',          'nombre' => 'Demo Administrador'],
-        
             ['rol' => 'sub_administrador',      'nombre' => 'Demo Subadministrador'],
             ['rol' => 'administrador_deposito', 'nombre' => 'Demo Administrador de depósito'],
             ['rol' => 'encargado_estacion',     'nombre' => 'Demo Encargado de estación'],
@@ -31,6 +30,7 @@ class UsuariosDemoSeeder extends Seeder
                     'NOM_USU' => $u['nombre'],
                     'PAS_USU' => Hash::make('25242322'),
                     'COD_ROL' => Rol::where('DES_ROL', $u['rol'])->value('COD_ROL'),
+                    'COD_EST' => null,
                     'ACT_USU' => true,
                 ]
             );

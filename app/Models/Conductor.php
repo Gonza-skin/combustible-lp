@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\UsaHashid;
 use Illuminate\Database\Eloquent\Model;
 
 class Conductor extends Model
 {
+    use UsaHashid;
+
     protected $table = 'conductor';
     protected $primaryKey = 'COD_CON';
     public $timestamps = false;

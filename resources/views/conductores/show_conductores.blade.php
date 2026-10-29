@@ -6,8 +6,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Detalle del conductor</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @include('partials.tema-head')
 </head>
 <body class="min-h-screen bg-[#f4f6f8] text-[#2c3e50] font-sans">
+    @include('partials.tema-body')
+    @include('partials.dashboard-sidebar')
     <main class="mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
         <div class="p-6">
             <h2 class="mb-6 text-3xl font-bold text-[#1F4E5F]">Detalle del conductor</h2>
@@ -57,7 +60,7 @@
                 </dl>
 
                 <div class="mt-8 flex gap-3">
-                    <a href="{{ route('conductores.edit', $conductor->COD_CON) }}" class="rounded-lg bg-[#1F4E5F] px-5 py-2 font-semibold text-white shadow-sm transition hover:bg-[#2c7873]">Editar conductor</a>
+                    <a href="{{ route('conductores.edit', $conductor) }}" class="rounded-lg bg-[#1F4E5F] px-5 py-2 font-semibold text-white shadow-sm transition hover:bg-[#2c7873]">Editar conductor</a>
                     <a href="{{ route('conductores.index') }}" class="rounded-lg bg-gray-200 px-5 py-2 font-semibold text-gray-700 shadow-sm transition hover:bg-gray-300">Volver</a>
                 </div>
             </div>

@@ -10,8 +10,8 @@
     <td>{{ number_format($t->CAP_TAN, 2) }}</td><td>{{ number_format($t->NIV_TAN, 2) }}</td>
     <td><span class="tag">{{ $t->ESD_TAN }}</span></td>
     <td class="acciones">
-        <a class="btn sec" href="{{ route('abast.tanques.edit', $t->COD_TAN) }}">Editar</a>
-        <form method="POST" action="{{ route('abast.tanques.destroy', $t->COD_TAN) }}" onsubmit="return confirm('¿Eliminar este tanque?')">
+        <a class="btn sec" href="{{ route('abast.tanques.edit', $t) }}">Editar</a>
+        <form method="POST" action="{{ route('abast.tanques.destroy', $t) }}" onsubmit="return confirm('¿Eliminar este tanque?')">
             @csrf @method('DELETE')<button class="btn rojo" type="submit">Eliminar</button>
         </form>
     </td>

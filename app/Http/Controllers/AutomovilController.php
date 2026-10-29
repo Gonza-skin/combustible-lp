@@ -50,9 +50,9 @@ class AutomovilController extends Controller
             ->with('success', 'El automóvil se registró correctamente.');
     }
 
-    public function show(Request $request, int $automovil): View
+    public function show(Request $request, AutomovilRegistro $automovil): View
     {
-        $registro = $this->scopedAutomoviles($request)->findOrFail($automovil);
+        $registro = $this->scopedAutomoviles($request)->findOrFail($automovil->getKey());
 
         return view('automoviles.show', [
             'registro' => $registro,
@@ -60,34 +60,34 @@ class AutomovilController extends Controller
         ]);
     }
 
-    public function edit(int $automovil): View
+    public function edit(AutomovilRegistro $automovil): View
     {
         $this->assertAdministrator(request());
 
         return view('automoviles.form', [
-            'automovil' => AutomovilRegistro::findOrFail($automovil),
+            'automovil' => $automovil,
             'estaciones' => $this->estaciones(),
             'titulo' => 'Editar automóvil',
         ]);
     }
 
-    public function update(Request $request, int $automovil): RedirectResponse
+    public function update(Request $request, AutomovilRegistro $automovil): RedirectResponse
     {
         $this->assertAdministrator($request);
 
-        $registro = AutomovilRegistro::findOrFail($automovil);
+        $registro = $automovil;
         $registro->update($request->validate($this->rules($registro)));
 
         return redirect()
-            ->route('automoviles.show', $registro->COD_VEH)
+            ->route('automoviles.show', $registro)
             ->with('success', 'El automóvil se actualizó correctamente.');
     }
 
-    public function destroy(Request $request, int $automovil): RedirectResponse
+    public function destroy(Request $request, AutomovilRegistro $automovil): RedirectResponse
     {
         $this->assertAdministrator($request);
 
-        $registro = AutomovilRegistro::findOrFail($automovil);
+        $registro = $automovil;
 
         if (DB::table('venta_combustible')->where('COD_VEH', $registro->COD_VEH)->exists()) {
             return back()->withErrors([

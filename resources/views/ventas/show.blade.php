@@ -19,7 +19,7 @@
         </dl>
         <div class="actions" style="margin-top: 20px">
             <a class="button secondary" href="{{ route('ventas.index') }}">Volver al listado</a>
-            <a class="button" href="{{ route('ventas.edit', $venta->COD_VEN) }}">Editar</a>
+            <a class="button" href="{{ route('ventas.edit', $venta) }}">Editar</a>
         </div>
     </section>
 @endsection

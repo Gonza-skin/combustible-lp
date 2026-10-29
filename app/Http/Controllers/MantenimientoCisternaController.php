@@ -53,8 +53,9 @@ class MantenimientoCisternaController extends Controller
         }
     }
 
-    public function show($codigo): View
+    public function show(MantenimientoCisterna $mantenimiento_cisterna): View
     {
+        $codigo = $mantenimiento_cisterna->getKey();
         $mantenimiento = MantenimientoCisterna::query()
             ->join('cisterna', 'mantenimiento_cisterna.COD_CIS', '=', 'cisterna.COD_CIS')
             ->select('mantenimiento_cisterna.*', 'cisterna.PLC_CIS', 'cisterna.CAP_CIS')
@@ -62,16 +63,16 @@ class MantenimientoCisternaController extends Controller
         return view('mantenimiento-cisternas.show_man_cis', compact('mantenimiento'));
     }
 
-    public function edit($codigo): View
+    public function edit(MantenimientoCisterna $mantenimiento_cisterna): View
     {
-        $mantenimiento = MantenimientoCisterna::findOrFail($codigo);
+        $mantenimiento = $mantenimiento_cisterna;
         $cisternas = DB::table('cisterna')->orderBy('PLC_CIS')->get();
         return view('mantenimiento-cisternas.update_man_cis', compact('mantenimiento', 'cisternas'));
     }
 
-    public function update(Request $request, $codigo): RedirectResponse
+    public function update(Request $request, MantenimientoCisterna $mantenimiento_cisterna): RedirectResponse
     {
-        $mantenimiento = MantenimientoCisterna::findOrFail($codigo);
+        $mantenimiento = $mantenimiento_cisterna;
         $rules = [
             'COD_CIS' => 'required|integer|exists:cisterna,COD_CIS',
             'TIP_MAN' => ['required', Rule::in(['preventivo', 'correctivo', 'documentacion'])],
@@ -94,9 +95,9 @@ class MantenimientoCisternaController extends Controller
         }
     }
 
-    public function destroy($codigo): RedirectResponse
+    public function destroy(MantenimientoCisterna $mantenimiento_cisterna): RedirectResponse
     {
-        $mantenimiento = MantenimientoCisterna::findOrFail($codigo);
+        $mantenimiento = $mantenimiento_cisterna;
         try {
             $mantenimiento->delete();
             return redirect()->route('mantenimiento-cisternas.index')->with('success', 'Registro de mantenimiento eliminado correctamente.');

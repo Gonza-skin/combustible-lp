@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\UsaHashid;
 use Illuminate\Database\Eloquent\Model;
 
 class VentaCombustibleRegistro extends Model
 {
+    use UsaHashid;
+
     protected $table = 'venta_combustible';
 
     protected $primaryKey = 'COD_VEN';

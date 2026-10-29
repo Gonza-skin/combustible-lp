@@ -30,10 +30,10 @@
                             <td>{{ $automovil->estacion?->NOM_EST ?: 'Sin asignar' }}</td>
                             <td>
                                 <div class="actions">
-                                    <a class="button secondary" href="{{ route('automoviles.show', $automovil->COD_VEH) }}">Ver</a>
+                                    <a class="button secondary" href="{{ route('automoviles.show', $automovil) }}">Ver</a>
                                     @if ($esAdministrador)
-                                        <a class="button" href="{{ route('automoviles.edit', $automovil->COD_VEH) }}">Editar</a>
-                                        <form method="POST" action="{{ route('automoviles.destroy', $automovil->COD_VEH) }}" onsubmit="return confirm('¿Eliminar este automóvil?')">
+                                        <a class="button" href="{{ route('automoviles.edit', $automovil) }}">Editar</a>
+                                        <form method="POST" action="{{ route('automoviles.destroy', $automovil) }}" onsubmit="return confirm('¿Eliminar este automóvil?')">
                                             @csrf
                                             @method('DELETE')
                                             <button class="button danger" type="submit">Eliminar</button>

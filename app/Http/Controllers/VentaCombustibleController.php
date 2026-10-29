@@ -49,43 +49,43 @@ class VentaCombustibleController extends Controller
         );
 
         return redirect()
-            ->route('ventas.show', $venta->COD_VEN)
+            ->route('ventas.show', $venta)
             ->with('success', 'La venta se registró correctamente.');
     }
 
-    public function show(Request $request, int $venta): View
+    public function show(Request $request, VentaCombustibleRegistro $venta): View
     {
         return view('ventas.show', [
-            'venta' => $this->ventasDeEstacion($request)->findOrFail($venta),
+            'venta' => $this->ventasDeEstacion($request)->findOrFail($venta->getKey()),
         ]);
     }
 
-    public function edit(Request $request, int $venta): View
+    public function edit(Request $request, VentaCombustibleRegistro $venta): View
     {
         $usuario = $this->usuarioConEstacion($request);
 
         return view('ventas.form', [
-            'venta' => $this->ventasDeEstacion($request)->findOrFail($venta),
+            'venta' => $this->ventasDeEstacion($request)->findOrFail($venta->getKey()),
             'vehiculos' => $this->vehiculosDeEstacion($usuario->COD_EST),
             'combustibles' => $this->combustibles(),
             'titulo' => 'Editar venta',
         ]);
     }
 
-    public function update(Request $request, int $venta): RedirectResponse
+    public function update(Request $request, VentaCombustibleRegistro $venta): RedirectResponse
     {
         $usuario = $this->usuarioConEstacion($request);
-        $registro = $this->ventasDeEstacion($request)->findOrFail($venta);
+        $registro = $this->ventasDeEstacion($request)->findOrFail($venta->getKey());
         $registro->update($this->validatedData($request, $usuario));
 
         return redirect()
-            ->route('ventas.show', $registro->COD_VEN)
+            ->route('ventas.show', $registro)
             ->with('success', 'La venta se actualizó correctamente.');
     }
 
-    public function destroy(Request $request, int $venta): RedirectResponse
+    public function destroy(Request $request, VentaCombustibleRegistro $venta): RedirectResponse
     {
-        $registro = $this->ventasDeEstacion($request)->findOrFail($venta);
+        $registro = $this->ventasDeEstacion($request)->findOrFail($venta->getKey());
         $registro->delete();
 
         return redirect()

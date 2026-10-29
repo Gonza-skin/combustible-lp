@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\UsaHashid;
 use Illuminate\Database\Eloquent\Model;
 
 class TanqueAlmacenamiento extends Model
 {
+    use UsaHashid;
+
     protected $table = 'tanque_almacenamiento';
     protected $primaryKey = 'COD_TAN';
     public $timestamps = false;

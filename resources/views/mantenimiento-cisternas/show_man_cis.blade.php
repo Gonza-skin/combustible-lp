@@ -6,8 +6,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Mantenimiento de Cisternas</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @include('partials.tema-head')
 </head>
 <body class="min-h-screen bg-slate-50 text-slate-800">
+    @include('partials.tema-body')
+    @include('partials.dashboard-sidebar')
     <div class="mx-auto max-w-4xl p-6">
         <h2 class="mb-6 text-3xl font-bold text-[#1F4E5F]">Detalle del mantenimiento</h2>
 
@@ -45,7 +48,7 @@
         </div>
 
         <div class="mt-6 flex gap-3">
-            <a href="{{ route('mantenimiento-cisternas.edit', $mantenimiento->COD_MAN) }}" class="rounded-lg bg-[#1F4E5F] px-6 py-2.5 font-medium text-white shadow-sm transition hover:bg-[#163a46]">Editar registro</a>
+            <a href="{{ route('mantenimiento-cisternas.edit', $mantenimiento) }}" class="rounded-lg bg-[#1F4E5F] px-6 py-2.5 font-medium text-white shadow-sm transition hover:bg-[#163a46]">Editar registro</a>
             <a href="{{ route('mantenimiento-cisternas.index') }}" class="rounded-lg bg-gray-200 px-6 py-2.5 font-medium text-gray-800 transition hover:bg-gray-300">Volver a la lista</a>
         </div>
     </div>

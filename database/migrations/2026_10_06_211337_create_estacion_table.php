@@ -1,11 +1,14 @@
 <?php
 
+use App\Support\AddsCheckConstraints;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    use AddsCheckConstraints;
+
     public function up(): void
     {
         Schema::create('estacion', function (Blueprint $table) {
@@ -22,8 +25,11 @@ return new class extends Migration
             $table->boolean('ACT_EST')->default(true);
             $table->timestamp('FEC_EST')->useCurrent();
 
-            $table->check("ESD_EST IN ('normal','nivel_bajo','sin_combustible')", 'chk_est_esd');
         });
+
+        $this->addCheckConstraints('estacion', [
+            'chk_est_esd' => "ESD_EST IN ('normal','nivel_bajo','sin_combustible')",
+        ]);
     }
 
     public function down(): void

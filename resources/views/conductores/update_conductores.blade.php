@@ -6,8 +6,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Editar conductor</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @include('partials.tema-head')
 </head>
 <body class="min-h-screen bg-[#f4f6f8] text-[#2c3e50] font-sans">
+    @include('partials.tema-body')
+    @include('partials.dashboard-sidebar')
     <main class="mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
         <div class="p-6">
             <h2 class="mb-6 text-3xl font-bold text-[#1F4E5F]">Editar conductor #{{ $conductor->COD_CON }}</h2>
@@ -25,7 +28,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('conductores.update', $conductor->COD_CON) }}" method="POST" class="space-y-6 rounded-lg bg-white p-6 shadow-sm border border-gray-200">
+            <form action="{{ route('conductores.update', $conductor) }}" method="POST" class="space-y-6 rounded-lg bg-white p-6 shadow-sm border border-gray-200">
                 @csrf @method('PUT')
                 <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
                     <div>

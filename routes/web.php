@@ -49,8 +49,7 @@ Route::middleware(['auth', 'role:administrador'])->group(function () {
     Route::resource('usuarios', UsuarioController::class)->except('show');
 });
 
-// ---- Estaciones, existencias, movimientos y recomendaciones (Angela) ----
-
+// ---- Estaciones, existencias, movimientos y recomendaciones ----
 // Ver estaciones: cualquier usuario con sesion
 Route::get('/estaciones', [EstacionController::class, 'index'])
     ->middleware('auth')
@@ -67,9 +66,9 @@ Route::middleware(['auth', 'role:administrador'])->group(function () {
 Route::middleware(['auth', 'role:encargado_estacion,administrador'])->group(function () {
     Route::get('/existencias', [ExistenciaController::class, 'index'])->name('existencias.index');
     Route::get('/existencias/{estacion}/{combustible}/ajustar', [ExistenciaController::class, 'ajustar'])
-        ->whereNumber(['estacion', 'combustible'])->name('existencias.ajustar');
+        ->name('existencias.ajustar');
     Route::post('/existencias/{estacion}/{combustible}/ajustar', [ExistenciaController::class, 'guardar'])
-        ->whereNumber(['estacion', 'combustible'])->name('existencias.guardar');
+        ->name('existencias.guardar');
 });
 
 // Movimientos (solo lectura): encargado, administrador y supervisor
@@ -150,3 +149,15 @@ Route::middleware(['auth', AlertaAccess::class])
     ->group(function () {
         Route::get('/', [AlertaController::class, 'index'])->name('index');
     });
+
+Route::middleware(['auth', 'role:encargado_estacion,administrador,supervisor'])
+    ->get('/movimientos', [MovimientoController::class, 'index'])
+    ->name('movimientos.index');
+
+Route::middleware(['auth', 'role:sub_administrador,administrador'])
+    ->get('/recomendaciones', [RecomendacionController::class, 'index'])
+    ->name('recomendaciones.index');
+
+require __DIR__ . '/abastecimiento.php';
+// Investigación Operativa II: Teoría de decisiones y Cadenas de Markov (módulo nuevo)
+require __DIR__ . '/investigacion.php';

@@ -36,9 +36,9 @@
                             <td>{{ $venta->VAL_VEN }}</td>
                             <td>
                                 <div class="actions">
-                                    <a class="button secondary" href="{{ route('ventas.show', $venta->COD_VEN) }}">Ver</a>
-                                    <a class="button" href="{{ route('ventas.edit', $venta->COD_VEN) }}">Editar</a>
-                                    <form method="POST" action="{{ route('ventas.destroy', $venta->COD_VEN) }}" onsubmit="return confirm('¿Eliminar esta venta?')">
+                                    <a class="button secondary" href="{{ route('ventas.show', $venta) }}">Ver</a>
+                                    <a class="button" href="{{ route('ventas.edit', $venta) }}">Editar</a>
+                                    <form method="POST" action="{{ route('ventas.destroy', $venta) }}" onsubmit="return confirm('¿Eliminar esta venta?')">
                                         @csrf
                                         @method('DELETE')
                                         <button class="button danger" type="submit">Eliminar</button>

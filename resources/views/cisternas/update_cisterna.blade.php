@@ -6,8 +6,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Control de cisternas y mantenimiento</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @include('partials.tema-head')
 </head>
 <body class="min-h-screen bg-[#f4f6f8] text-[#2c3e50] font-sans">
+    @include('partials.tema-body')
+    @include('partials.dashboard-sidebar')
     <main class="mx-auto max-w-4xl p-4 sm:p-6 lg:p-8">
         <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
             <h2 class="mb-6 border-b pb-2 text-2xl font-bold text-[#1F4E5F]">Editar Cisterna #{{ $cisterna->COD_CIS }}</h2>
@@ -19,7 +22,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('cisternas.update', $cisterna->COD_CIS) }}" method="POST" class="space-y-6">
+            <form action="{{ route('cisternas.update', $cisterna) }}" method="POST" class="space-y-6">
                 @csrf @method('PUT')
                 <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                     <div>

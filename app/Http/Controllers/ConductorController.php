@@ -65,17 +65,16 @@ class ConductorController extends Controller
         }
     }
 
-    public function show($codigo): View
+    public function show(Conductor $conductor): View
     {
         $conductor = Conductor::query()->leftJoin('usuario', 'conductor.COD_USU', '=', 'usuario.COD_USU')
             ->select('conductor.*', 'usuario.NOM_USU as USUARIO_NOMBRE', 'usuario.EML_USU')
-            ->where('conductor.COD_CON', $codigo)->firstOrFail();
+            ->where('conductor.COD_CON', $conductor->getKey())->firstOrFail();
         return view('conductores.show_conductores', compact('conductor'));
     }
 
-    public function edit($codigo): View
+    public function edit(Conductor $conductor): View
     {
-        $conductor = Conductor::findOrFail($codigo);
         $usuarios = DB::table('usuario')->where(function ($query) use ($conductor) {
             $query->whereNotIn('COD_USU', function ($subquery) {
                 $subquery->select('COD_USU')->from('conductor');
@@ -84,9 +83,8 @@ class ConductorController extends Controller
         return view('conductores.update_conductores', compact('conductor', 'usuarios'));
     }
 
-    public function update(Request $request, $codigo): RedirectResponse
+    public function update(Request $request, Conductor $conductor): RedirectResponse
     {
-        $conductor = Conductor::findOrFail($codigo);
         $rules = [
             'COD_USU' => ['required', 'integer', 'exists:usuario,COD_USU', Rule::unique('conductor', 'COD_USU')->ignore($conductor->COD_CON, 'COD_CON')],
             'NOM_CON' => 'required|string|max:150',
@@ -111,9 +109,8 @@ class ConductorController extends Controller
         }
     }
 
-    public function destroy($codigo): RedirectResponse
+    public function destroy(Conductor $conductor): RedirectResponse
     {
-        $conductor = Conductor::findOrFail($codigo);
         try {
             // La base impide borrar un conductor asignado a una cisterna.
             $conductor->delete();

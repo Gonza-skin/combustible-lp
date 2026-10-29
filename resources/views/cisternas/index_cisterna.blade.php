@@ -6,8 +6,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Control de cisternas y mantenimiento</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @include('partials.tema-head')
 </head>
 <body class="min-h-screen bg-[#f4f6f8] text-[#2c3e50] font-sans">
+    @include('partials.tema-body')
+    @include('partials.dashboard-sidebar')
     <main class="mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
         <div class="p-6">
             <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
@@ -63,9 +66,9 @@
                             </td>
                             <td class="px-4 py-3">
                                 <div class="flex flex-wrap gap-2">
-                                    <a class="rounded-lg bg-sky-100 px-3 py-1 font-medium text-sky-800 transition hover:bg-sky-200" href="{{ route('cisternas.show', $cisterna->COD_CIS) }}">Ver</a>
-                                    <a class="rounded-lg bg-amber-100 px-3 py-1 font-medium text-amber-800 transition hover:bg-amber-200" href="{{ route('cisternas.edit', $cisterna->COD_CIS) }}">Editar</a>
-                                    <form action="{{ route('cisternas.destroy', $cisterna->COD_CIS) }}" method="POST" onsubmit="return confirm('¿Eliminar esta cisterna?')">
+                                    <a class="rounded-lg bg-sky-100 px-3 py-1 font-medium text-sky-800 transition hover:bg-sky-200" href="{{ route('cisternas.show', $cisterna) }}">Ver</a>
+                                    <a class="rounded-lg bg-amber-100 px-3 py-1 font-medium text-amber-800 transition hover:bg-amber-200" href="{{ route('cisternas.edit', $cisterna) }}">Editar</a>
+                                    <form action="{{ route('cisternas.destroy', $cisterna) }}" method="POST" onsubmit="return confirm('¿Eliminar esta cisterna?')">
                                         @csrf @method('DELETE')
                                         <button class="rounded-lg bg-red-100 px-3 py-1 font-medium text-red-800 transition hover:bg-red-200" type="submit">Eliminar</button>
                                     </form>

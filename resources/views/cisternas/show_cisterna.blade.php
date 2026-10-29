@@ -6,8 +6,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Control de cisternas y mantenimiento</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @include('partials.tema-head')
 </head>
 <body class="min-h-screen bg-[#f4f6f8] text-[#2c3e50] font-sans">
+    @include('partials.tema-body')
+    @include('partials.dashboard-sidebar')
     <main class="mx-auto max-w-4xl p-4 sm:p-6 lg:p-8">
         <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
             <h2 class="mb-6 border-b pb-2 text-2xl font-bold text-[#1F4E5F]">Detalle de Cisterna: {{ $cisterna->PLC_CIS }}</h2>
@@ -40,7 +43,7 @@
             </dl>
 
             <div class="mt-8 flex gap-4 border-t pt-4">
-                <a href="{{ route('cisternas.edit', $cisterna->COD_CIS) }}" class="rounded-lg bg-[#1F4E5F] px-6 py-2 font-semibold text-white shadow-sm transition hover:bg-[#2c7873]">Editar Cisterna</a>
+                <a href="{{ route('cisternas.edit', $cisterna) }}" class="rounded-lg bg-[#1F4E5F] px-6 py-2 font-semibold text-white shadow-sm transition hover:bg-[#2c7873]">Editar Cisterna</a>
                 <a href="{{ route('cisternas.index') }}" class="rounded-lg bg-gray-200 px-6 py-2 font-semibold text-[#1F4E5F] shadow-sm transition hover:bg-gray-300">Volver a la lista</a>
             </div>
         </div>
