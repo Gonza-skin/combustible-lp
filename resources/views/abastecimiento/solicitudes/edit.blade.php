@@ -2,7 +2,7 @@
 @section('titulo', 'Editar solicitud')
 @section('contenido')
 <h1>Editar solicitud #{{ $item->COD_SOL }}</h1>
-<form method="POST" action="{{ route('abast.solicitudes.update', $item->COD_SOL) }}">
+<form method="POST" action="{{ route('abast.solicitudes.update', $item) }}">
     @csrf @method('PUT')
     <label>Estación</label>
     <input type="text" value="{{ $estacion }}" disabled>

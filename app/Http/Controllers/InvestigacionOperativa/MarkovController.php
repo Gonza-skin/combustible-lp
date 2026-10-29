@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\InvestigacionOperativa;
 
 use App\Http\Controllers\Controller;
+use App\Models\Estacion;
 use App\Support\InvestigacionOperativa\CadenaMarkov;
 use App\Support\InvestigacionOperativa\HistorialEstados;
 use Illuminate\Http\Request;
@@ -23,7 +24,7 @@ class MarkovController extends Controller
         $d = $request->validate([
             'dias' => ['nullable', 'integer', 'min:1', 'max:60'],
             'umbral' => ['nullable', 'numeric', 'min:1', 'max:100'],
-            'estacion' => ['nullable', 'integer'],
+            'estacion' => ['nullable', 'string'],
             'fuente' => ['nullable', 'in:real,informe'],
         ]);
         $dias = (int) ($d['dias'] ?? 3);
@@ -46,7 +47,12 @@ class MarkovController extends Controller
         $filas = $estaciones->map(fn ($e) => $this->analizar($e, $c, $matrizGlobal, $fuente, $dias, $umbral))
             ->sortByDesc('riesgo')->values();
 
-        $detalle = $filas->firstWhere('estacion.COD_EST', (int) ($d['estacion'] ?? 0)) ?? $filas->first();
+        $estacionId = isset($d['estacion'])
+            ? Estacion::decodeRouteKey($d['estacion'])
+            : null;
+        abort_if(isset($d['estacion']) && $estacionId === null, 404);
+
+        $detalle = $filas->firstWhere('estacion.COD_EST', $estacionId) ?? $filas->first();
 
         return view('investigacion.markov', [
             'filas' => $filas,

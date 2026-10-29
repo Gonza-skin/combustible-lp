@@ -55,21 +55,21 @@ class IncidenciaController extends Controller
         );
 
         return redirect()
-            ->route('incidencias.show', $incidencia->COD_INC)
+            ->route('incidencias.show', $incidencia)
             ->with('success', 'La incidencia se registró correctamente.');
     }
 
-    public function show(int $incidencia): View
+    public function show(IncidenciaRegistro $incidencia): View
     {
         return view('incidencias.show', [
-            'incidencia' => IncidenciaRegistro::findOrFail($incidencia),
+            'incidencia' => $incidencia,
         ]);
     }
 
-    public function edit(int $incidencia): View
+    public function edit(IncidenciaRegistro $incidencia): View
     {
         return view('incidencias.form', [
-            'incidencia' => IncidenciaRegistro::findOrFail($incidencia),
+            'incidencia' => $incidencia,
             'abastecimientos' => $this->abastecimientos(),
             'tanques' => $this->tanques(),
             'tipos' => self::TIPOS,
@@ -78,19 +78,19 @@ class IncidenciaController extends Controller
         ]);
     }
 
-    public function update(Request $request, int $incidencia): RedirectResponse
+    public function update(Request $request, IncidenciaRegistro $incidencia): RedirectResponse
     {
-        $registro = IncidenciaRegistro::findOrFail($incidencia);
+        $registro = $incidencia;
         $registro->update($request->validate($this->rules()));
 
         return redirect()
-            ->route('incidencias.show', $registro->COD_INC)
+            ->route('incidencias.show', $registro)
             ->with('success', 'La incidencia se actualizó correctamente.');
     }
 
-    public function destroy(int $incidencia): RedirectResponse
+    public function destroy(IncidenciaRegistro $incidencia): RedirectResponse
     {
-        $registro = IncidenciaRegistro::findOrFail($incidencia);
+        $registro = $incidencia;
 
         if (DB::table('alerta')->where('COD_INC', $registro->COD_INC)->exists()) {
             return back()->withErrors([

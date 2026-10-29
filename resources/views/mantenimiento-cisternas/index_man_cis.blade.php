@@ -60,9 +60,9 @@
                             <td class="px-4 py-3">{{ \Illuminate\Support\Str::limit($mantenimiento->DES_MAN ?? 'Sin descripción', 60) }}</td>
                             <td class="px-4 py-3">
                                 <div class="flex flex-wrap gap-2">
-                                    <a class="rounded-lg bg-sky-100 px-3 py-1 font-medium text-sky-800 transition hover:bg-sky-200" href="{{ route('mantenimiento-cisternas.show', $mantenimiento->COD_MAN) }}">Ver</a>
-                                    <a class="rounded-lg bg-amber-100 px-3 py-1 font-medium text-amber-800 transition hover:bg-amber-200" href="{{ route('mantenimiento-cisternas.edit', $mantenimiento->COD_MAN) }}">Editar</a>
-                                    <form action="{{ route('mantenimiento-cisternas.destroy', $mantenimiento->COD_MAN) }}" method="POST" onsubmit="return confirm('¿Eliminar este registro de mantenimiento?')">
+                                    <a class="rounded-lg bg-sky-100 px-3 py-1 font-medium text-sky-800 transition hover:bg-sky-200" href="{{ route('mantenimiento-cisternas.show', $mantenimiento) }}">Ver</a>
+                                    <a class="rounded-lg bg-amber-100 px-3 py-1 font-medium text-amber-800 transition hover:bg-amber-200" href="{{ route('mantenimiento-cisternas.edit', $mantenimiento) }}">Editar</a>
+                                    <form action="{{ route('mantenimiento-cisternas.destroy', $mantenimiento) }}" method="POST" onsubmit="return confirm('¿Eliminar este registro de mantenimiento?')">
                                         @csrf @method('DELETE')
                                         <button class="rounded-lg bg-red-100 px-3 py-1 font-medium text-red-800 transition hover:bg-red-200" type="submit">Eliminar</button>
                                     </form>

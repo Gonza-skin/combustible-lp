@@ -45,10 +45,8 @@ Route::resource('estaciones', EstacionController::class)
 
 Route::get('/existencias', [ExistenciaController::class, 'index'])->name('existencias.index');
 Route::get('/existencias/{estacion}/{combustible}/ajustar', [ExistenciaController::class, 'ajustar'])
-    ->whereNumber(['estacion', 'combustible'])
     ->name('existencias.ajustar');
 Route::post('/existencias/{estacion}/{combustible}/ajustar', [ExistenciaController::class, 'guardar'])
-    ->whereNumber(['estacion', 'combustible'])
     ->name('existencias.guardar');
 
 Route::resource('cisternas', CisternaController::class)

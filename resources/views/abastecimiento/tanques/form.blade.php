@@ -3,7 +3,7 @@
 @section('contenido')
 @php $esEdit = isset($item); @endphp
 <h1>{{ $esEdit ? 'Editar tanque' : 'Nuevo tanque' }}</h1>
-<form method="POST" action="{{ $esEdit ? route('abast.tanques.update', $item->COD_TAN) : route('abast.tanques.store') }}">
+<form method="POST" action="{{ $esEdit ? route('abast.tanques.update', $item) : route('abast.tanques.store') }}">
     @csrf
     @if($esEdit) @method('PUT') @endif
     <label>Planta</label>

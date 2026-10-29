@@ -37,7 +37,7 @@
             <div><label>Estación a detallar</label>
                 <select name="estacion">
                     @foreach ($estaciones as $e)
-                        <option value="{{ $e->COD_EST }}" @selected($detalle && (int) $detalle['estacion']->COD_EST === (int) $e->COD_EST)>{{ $e->NOM_EST }}</option>
+                        <option value="{{ \App\Models\Estacion::encodeRouteKey($e->COD_EST) }}" @selected($detalle && (int) $detalle['estacion']->COD_EST === (int) $e->COD_EST)>{{ $e->NOM_EST }}</option>
                     @endforeach
                 </select></div>
             <div><label>Días a predecir</label><input type="number" name="dias" min="1" max="60" value="{{ $dias }}"></div>
@@ -66,7 +66,7 @@
             @foreach ($filas as $n => $f)
                 <tr>
                     <td>{{ $n + 1 }}</td>
-                    <td><a href="{{ route('markov.index', ['estacion' => $f['estacion']->COD_EST, 'dias' => $dias, 'umbral' => $umbral, 'fuente' => $fuente]) }}">{{ $f['estacion']->NOM_EST }}</a>
+                    <td><a href="{{ route('markov.index', ['estacion' => \App\Models\Estacion::encodeRouteKey($f['estacion']->COD_EST), 'dias' => $dias, 'umbral' => $umbral, 'fuente' => $fuente]) }}">{{ $f['estacion']->NOM_EST }}</a>
                         <div class="io-nota">{{ $f['estacion']->ZON_EST }}</div></td>
                     <td>{{ $estados[$f['actual']] }}</td>
                     <td>{{ $pct($f['riesgo']) }}<div class="io-bar {{ $f['alerta'] ? 'mal' : '' }}"><i style="width:{{ round($f['riesgo'] * 100) }}%"></i></div></td>

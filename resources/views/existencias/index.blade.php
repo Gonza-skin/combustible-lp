@@ -73,7 +73,7 @@
                         <td class="num">{{ number_format($f->MAX_EST, 2) }}</td>
                         <td><span class="badge {{ $color }}">{{ $texto }}</span></td>
                         <td>{{ $f->FEC_EXI ?? 'Sin registro' }}</td>
-                        <td><a class="btn" href="{{ route('existencias.ajustar', [$f->COD_EST, $f->COD_COM]) }}">Ajustar</a></td>
+                        <td><a class="btn" href="{{ route('existencias.ajustar', [\App\Models\Estacion::encodeRouteKey($f->COD_EST), \App\Models\TipoCombustible::encodeRouteKey($f->COD_COM)]) }}">Ajustar</a></td>
                     </tr>
                 @empty
                     <tr><td colspan="8">No hay estaciones activas. Crea una primero en Estaciones.</td></tr>

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Estacion;
+use App\Models\TipoCombustible;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -60,16 +62,18 @@ class ExistenciaController extends Controller
         return view('existencias.index', compact('filas'));
     }
 
-    public function ajustar(int $estacion, int $combustible)
+    public function ajustar(string $estacion, string $combustible)
     {
-        $fila = $this->buscarFila($estacion, $combustible);
+        [$estacionId, $combustibleId] = $this->decodificarIds($estacion, $combustible);
+        $fila = $this->buscarFila($estacionId, $combustibleId);
 
         return view('existencias.ajustar', compact('fila'));
     }
 
-    public function guardar(Request $request, int $estacion, int $combustible)
+    public function guardar(Request $request, string $estacion, string $combustible)
     {
-        $fila = $this->buscarFila($estacion, $combustible);
+        [$estacionId, $combustibleId] = $this->decodificarIds($estacion, $combustible);
+        $fila = $this->buscarFila($estacionId, $combustibleId);
 
         $datos = $request->validate([
             'CANTIDAD' => 'required|numeric|min:0|max:99999999',
@@ -86,10 +90,10 @@ class ExistenciaController extends Controller
 
         $usuarioId = $request->user()?->COD_USU;
 
-        DB::transaction(function () use ($estacion, $combustible, $nueva, $datos, $usuarioId) {
+        DB::transaction(function () use ($estacionId, $combustibleId, $nueva, $datos, $usuarioId) {
             $actual = DB::table('existencia_estacion')
-                ->where('COD_EST', $estacion)
-                ->where('COD_COM', $combustible)
+                ->where('COD_EST', $estacionId)
+                ->where('COD_COM', $combustibleId)
                 ->lockForUpdate()
                 ->value('CAN_EXI');
 
@@ -98,21 +102,21 @@ class ExistenciaController extends Controller
 
             if ($actual === null) {
                 DB::table('existencia_estacion')->insert([
-                    'COD_EST' => $estacion,
-                    'COD_COM' => $combustible,
+                    'COD_EST' => $estacionId,
+                    'COD_COM' => $combustibleId,
                     'CAN_EXI' => $nueva,
                 ]);
             } else {
                 DB::table('existencia_estacion')
-                    ->where('COD_EST', $estacion)
-                    ->where('COD_COM', $combustible)
+                    ->where('COD_EST', $estacionId)
+                    ->where('COD_COM', $combustibleId)
                     ->update(['CAN_EXI' => $nueva]);
             }
 
             if ($diferencia != 0.0) {
                 DB::table('movimiento_existencia')->insert([
-                    'COD_EST' => $estacion,
-                    'COD_COM' => $combustible,
+                    'COD_EST' => $estacionId,
+                    'COD_COM' => $combustibleId,
                     'TIP_MOV' => $diferencia > 0 ? 'entrada' : 'salida',
                     'CAN_MOV' => abs($diferencia),
                     'COD_USU' => $usuarioId,
@@ -123,5 +127,15 @@ class ExistenciaController extends Controller
 
         return redirect()->route('existencias.index')
             ->with('ok', 'Existencia ajustada correctamente.');
+    }
+
+    private function decodificarIds(string $estacion, string $combustible): array
+    {
+        $estacionId = Estacion::decodeRouteKey($estacion);
+        $combustibleId = TipoCombustible::decodeRouteKey($combustible);
+
+        abort_if($estacionId === null || $combustibleId === null, 404);
+
+        return [$estacionId, $combustibleId];
     }
 }

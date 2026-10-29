@@ -6,7 +6,7 @@
 @section('content')
     <section class="panel">
         <h2>{{ $titulo }}</h2>
-        <form method="POST" action="{{ $venta ? route('ventas.update', $venta->COD_VEN) : route('ventas.store') }}">
+        <form method="POST" action="{{ $venta ? route('ventas.update', $venta) : route('ventas.store') }}">
             @csrf
             @if ($venta)
                 @method('PUT')

@@ -15,7 +15,7 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ $automovil ? route('automoviles.update', $automovil->COD_VEH) : route('automoviles.store') }}">
+        <form method="POST" action="{{ $automovil ? route('automoviles.update', $automovil) : route('automoviles.store') }}">
             @csrf
             @if ($automovil)
                 @method('PUT')

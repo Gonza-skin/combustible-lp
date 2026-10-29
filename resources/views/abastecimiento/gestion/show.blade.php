@@ -13,7 +13,7 @@
 
 @if(in_array($item->ESD_ABA, ['pendiente','asignado']))
 <h2 style="font-size:17px;margin-top:22px">Asignar cisterna</h2>
-<form method="POST" action="{{ route('abast.gestion.asignar', $item->COD_ABA) }}">
+<form method="POST" action="{{ route('abast.gestion.asignar', $item) }}">
     @csrf
     <label>Cisterna disponible (mismo combustible)</label>
     <select name="COD_CIS" required>
@@ -30,7 +30,7 @@
 
 @if(count($siguientes))
 <h2 style="font-size:17px;margin-top:22px">Cambiar estado</h2>
-<form method="POST" action="{{ route('abast.gestion.estado', $item->COD_ABA) }}">
+<form method="POST" action="{{ route('abast.gestion.estado', $item) }}">
     @csrf @method('PATCH')
     <label>Nuevo estado</label>
     <select name="ESD_ABA" required>

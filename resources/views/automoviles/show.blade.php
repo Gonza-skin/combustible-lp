@@ -17,7 +17,7 @@
         <div class="actions" style="margin-top: 20px">
             <a class="button secondary" href="{{ route('automoviles.index') }}">Volver al listado</a>
             @if ($esAdministrador)
-                <a class="button" href="{{ route('automoviles.edit', $registro->COD_VEH) }}">Editar</a>
+                <a class="button" href="{{ route('automoviles.edit', $registro) }}">Editar</a>
             @endif
         </div>
     </section>

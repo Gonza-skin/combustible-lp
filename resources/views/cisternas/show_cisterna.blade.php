@@ -43,7 +43,7 @@
             </dl>
 
             <div class="mt-8 flex gap-4 border-t pt-4">
-                <a href="{{ route('cisternas.edit', $cisterna->COD_CIS) }}" class="rounded-lg bg-[#1F4E5F] px-6 py-2 font-semibold text-white shadow-sm transition hover:bg-[#2c7873]">Editar Cisterna</a>
+                <a href="{{ route('cisternas.edit', $cisterna) }}" class="rounded-lg bg-[#1F4E5F] px-6 py-2 font-semibold text-white shadow-sm transition hover:bg-[#2c7873]">Editar Cisterna</a>
                 <a href="{{ route('cisternas.index') }}" class="rounded-lg bg-gray-200 px-6 py-2 font-semibold text-[#1F4E5F] shadow-sm transition hover:bg-gray-300">Volver a la lista</a>
             </div>
         </div>

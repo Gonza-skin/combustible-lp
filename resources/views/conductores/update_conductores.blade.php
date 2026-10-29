@@ -28,7 +28,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('conductores.update', $conductor->COD_CON) }}" method="POST" class="space-y-6 rounded-lg bg-white p-6 shadow-sm border border-gray-200">
+            <form action="{{ route('conductores.update', $conductor) }}" method="POST" class="space-y-6 rounded-lg bg-white p-6 shadow-sm border border-gray-200">
                 @csrf @method('PUT')
                 <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
                     <div>

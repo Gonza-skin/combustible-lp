@@ -64,7 +64,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('existencias.guardar', [$fila->COD_EST, $fila->COD_COM]) }}" method="POST">
+            <form action="{{ route('existencias.guardar', [\App\Models\Estacion::encodeRouteKey($fila->COD_EST), \App\Models\TipoCombustible::encodeRouteKey($fila->COD_COM)]) }}" method="POST">
                 @csrf
 
                 <div class="campo">

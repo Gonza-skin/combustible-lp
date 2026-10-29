@@ -60,7 +60,7 @@
                 </dl>
 
                 <div class="mt-8 flex gap-3">
-                    <a href="{{ route('conductores.edit', $conductor->COD_CON) }}" class="rounded-lg bg-[#1F4E5F] px-5 py-2 font-semibold text-white shadow-sm transition hover:bg-[#2c7873]">Editar conductor</a>
+                    <a href="{{ route('conductores.edit', $conductor) }}" class="rounded-lg bg-[#1F4E5F] px-5 py-2 font-semibold text-white shadow-sm transition hover:bg-[#2c7873]">Editar conductor</a>
                     <a href="{{ route('conductores.index') }}" class="rounded-lg bg-gray-200 px-5 py-2 font-semibold text-gray-700 shadow-sm transition hover:bg-gray-300">Volver</a>
                 </div>
             </div>

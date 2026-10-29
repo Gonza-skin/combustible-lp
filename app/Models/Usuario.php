@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\UsaHashid;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Usuario extends Authenticatable
 {
+    use UsaHashid;
+
     protected $table = 'usuario';
     protected $primaryKey = 'COD_USU';
     public $timestamps = false;

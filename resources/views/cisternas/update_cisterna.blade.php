@@ -22,7 +22,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('cisternas.update', $cisterna->COD_CIS) }}" method="POST" class="space-y-6">
+            <form action="{{ route('cisternas.update', $cisterna) }}" method="POST" class="space-y-6">
                 @csrf @method('PUT')
                 <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                     <div>

@@ -66,9 +66,9 @@
                             </td>
                             <td class="px-4 py-3">
                                 <div class="flex flex-wrap gap-2">
-                                    <a class="rounded-lg bg-sky-100 px-3 py-1 font-medium text-sky-800 transition hover:bg-sky-200" href="{{ route('cisternas.show', $cisterna->COD_CIS) }}">Ver</a>
-                                    <a class="rounded-lg bg-amber-100 px-3 py-1 font-medium text-amber-800 transition hover:bg-amber-200" href="{{ route('cisternas.edit', $cisterna->COD_CIS) }}">Editar</a>
-                                    <form action="{{ route('cisternas.destroy', $cisterna->COD_CIS) }}" method="POST" onsubmit="return confirm('¿Eliminar esta cisterna?')">
+                                    <a class="rounded-lg bg-sky-100 px-3 py-1 font-medium text-sky-800 transition hover:bg-sky-200" href="{{ route('cisternas.show', $cisterna) }}">Ver</a>
+                                    <a class="rounded-lg bg-amber-100 px-3 py-1 font-medium text-amber-800 transition hover:bg-amber-200" href="{{ route('cisternas.edit', $cisterna) }}">Editar</a>
+                                    <form action="{{ route('cisternas.destroy', $cisterna) }}" method="POST" onsubmit="return confirm('¿Eliminar esta cisterna?')">
                                         @csrf @method('DELETE')
                                         <button class="rounded-lg bg-red-100 px-3 py-1 font-medium text-red-800 transition hover:bg-red-200" type="submit">Eliminar</button>
                                     </form>

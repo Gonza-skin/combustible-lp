@@ -66,20 +66,19 @@ class CisternaController extends Controller
         }
     }
 
-    public function show($cisterna): View
+    public function show(Cisterna $cisterna): View
     {
         $registro = Cisterna::query()
             ->leftJoin('tipo_combustible', 'cisterna.COD_COM', '=', 'tipo_combustible.COD_COM')
             ->leftJoin('conductor', 'cisterna.COD_CON', '=', 'conductor.COD_CON')
             ->select('cisterna.*', 'tipo_combustible.DES_COM', 'conductor.NOM_CON')
-            ->where('cisterna.COD_CIS', $cisterna)->firstOrFail();
+            ->where('cisterna.COD_CIS', $cisterna->getKey())->firstOrFail();
 
         return view('cisternas.show_cisterna', ['cisterna' => $registro]);
     }
 
-    public function edit($cisterna): View
+    public function edit(Cisterna $cisterna): View
     {
-        $cisterna = Cisterna::findOrFail($cisterna);
         $combustibles = DB::table('tipo_combustible')->orderBy('DES_COM')->get();
         $conductores = DB::table('conductor')->where(function ($query) use ($cisterna) {
             $query->where('ACT_CON', 1);
@@ -89,9 +88,8 @@ class CisternaController extends Controller
         return view('cisternas.update_cisterna', compact('cisterna', 'combustibles', 'conductores'));
     }
 
-    public function update(Request $request, $codigo): RedirectResponse
+    public function update(Request $request, Cisterna $cisterna): RedirectResponse
     {
-        $cisterna = Cisterna::findOrFail($codigo);
         $rules = [
             'PLC_CIS' => ['required', 'string', 'max:20', Rule::unique('cisterna', 'PLC_CIS')->ignore($cisterna->COD_CIS, 'COD_CIS')],
             'CAP_CIS' => 'required|numeric|gt:0',
@@ -116,9 +114,8 @@ class CisternaController extends Controller
         }
     }
 
-    public function destroy($codigo): RedirectResponse
+    public function destroy(Cisterna $cisterna): RedirectResponse
     {
-        $cisterna = Cisterna::findOrFail($codigo);
         try {
             $cisterna->delete();
             return redirect()->route('cisternas.index')->with('success', 'Cisterna eliminada correctamente.');

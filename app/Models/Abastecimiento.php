@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\UsaHashid;
 use Illuminate\Database\Eloquent\Model;
 
 class Abastecimiento extends Model
 {
+    use UsaHashid;
+
     protected $table = 'abastecimiento';
     protected $primaryKey = 'COD_ABA';
     public $timestamps = false;

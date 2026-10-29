@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\UsaHashid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AutomovilRegistro extends Model
 {
+    use UsaHashid;
+
     protected $table = 'automovil';
 
     protected $primaryKey = 'COD_VEH';

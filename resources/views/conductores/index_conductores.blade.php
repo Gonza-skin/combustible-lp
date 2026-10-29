@@ -69,9 +69,9 @@
                             </td>
                             <td class="px-4 py-3">
                                 <div class="flex flex-wrap gap-2">
-                                    <a class="rounded-lg bg-sky-100 px-3 py-1 font-medium text-sky-800 transition hover:bg-sky-200" href="{{ route('conductores.show', $conductor->COD_CON) }}">Ver</a>
-                                    <a class="rounded-lg bg-amber-100 px-3 py-1 font-medium text-amber-800 transition hover:bg-amber-200" href="{{ route('conductores.edit', $conductor->COD_CON) }}">Editar</a>
-                                    <form action="{{ route('conductores.destroy', $conductor->COD_CON) }}" method="POST" onsubmit="return confirm('¿Eliminar este conductor?')">
+                                    <a class="rounded-lg bg-sky-100 px-3 py-1 font-medium text-sky-800 transition hover:bg-sky-200" href="{{ route('conductores.show', $conductor) }}">Ver</a>
+                                    <a class="rounded-lg bg-amber-100 px-3 py-1 font-medium text-amber-800 transition hover:bg-amber-200" href="{{ route('conductores.edit', $conductor) }}">Editar</a>
+                                    <form action="{{ route('conductores.destroy', $conductor) }}" method="POST" onsubmit="return confirm('¿Eliminar este conductor?')">
                                         @csrf @method('DELETE')
                                         <button class="rounded-lg bg-red-100 px-3 py-1 font-medium text-red-800 transition hover:bg-red-200" type="submit">Eliminar</button>
                                     </form>

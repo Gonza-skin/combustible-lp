@@ -26,7 +26,7 @@
         @endif
 
         <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm md:p-8">
-            <form action="{{ route('mantenimiento-cisternas.update', $mantenimiento->COD_MAN) }}" method="POST" class="space-y-6">
+            <form action="{{ route('mantenimiento-cisternas.update', $mantenimiento) }}" method="POST" class="space-y-6">
                 @csrf @method('PUT')
                 <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                     <div>
